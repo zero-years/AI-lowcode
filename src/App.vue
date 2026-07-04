@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import ScreenEditor from '@/editor/index.vue'
+</script>
 
 <template>
-  <el-button class="test">按钮</el-button>
+  <ScreenEditor></ScreenEditor>
 </template>
 
 <style scoped></style>
