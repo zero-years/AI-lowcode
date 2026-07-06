@@ -2,6 +2,13 @@ import type { Material, MaterialGroup } from '@/types/index.ts'
 
 const materials: Material[] = []
 
+const materialModules = import.meta.glob('./*/index.ts', { eager: true })
+
+Object.values(materialModules).forEach((module) => {
+  //@ts-ignore
+  module.install(registerMaterial)
+})
+
 const groups: MaterialGroup[] = [
   {
     name: '图表',
@@ -11,15 +18,9 @@ const groups: MaterialGroup[] = [
   {
     name: '信息',
     icon: 'mdi:information-outline',
-    key: 'text',
+    key: 'info',
   },
 ]
-
-const materialModules = import.meta.glob('./*/index.ts', { eager: true })
-
-Object.values(materialModules).forEach((module) => {
-  module.install(registerMaterial)
-})
 
 export function registerMaterial(material: Material[]) {
   materials.push(...material)
