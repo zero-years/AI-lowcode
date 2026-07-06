@@ -2,6 +2,7 @@
 import ToolbarLeft from './toolbar/toolbarLeft.vue'
 import ToolbarRight from './toolbar/toolbarRight.vue'
 import MaterialPanel from './panels/material/index.vue'
+import LayerPanel from './panels/layer/index.vue'
 
 import { UseEditorStore } from '@/stores/editor'
 
@@ -31,9 +32,7 @@ const propertyWidth = computed(() => (panelVisible.property ? '260px' : '0px'))
       />
 
       <!-- 图层 -->
-      <aside class="layer overflow-hidden transition-all" :style="{ width: layerWidth }">
-        图层
-      </aside>
+      <LayerPanel class="layer overflow-hidden transition-all" :style="{ width: layerWidth }" />
 
       <!-- 画布 -->
       <aside class="canvas flex-1">画布</aside>
