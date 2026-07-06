@@ -23,4 +23,11 @@ export default defineConfigWithVueTs(
   ...pluginOxlint.buildFromOxlintConfigFile('.oxlintrc.json'),
 
   skipFormatting,
+
+  {
+    name: 'customConfig',
+    rules: {
+      'vue/multi-word-component-names': 'off',
+    },
+  },
 )

@@ -37,7 +37,7 @@ const { panelVisible, togglePanel } = UseEditorStore()
     border-radius: 6px;
     cursor: pointer;
     &.active {
-      background: #373b46;
+      background: var(--active-color);
     }
   }
 }

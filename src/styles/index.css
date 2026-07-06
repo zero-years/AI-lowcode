@@ -2,5 +2,8 @@
 
 @theme {
   --spacing: 1px;
+
+  --bg-color: #24272e;
   --border-color: #3f4451;
+  --active-color: #373b46;
 }

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import ToolbarLeft from './toolbar/toolbarLeft.vue'
 import ToolbarRight from './toolbar/toolbarRight.vue'
+import MaterialPanel from './panels/material/index.vue'
+
 import { UseEditorStore } from '@/stores/editor'
 
 defineOptions({
@@ -17,15 +19,16 @@ const propertyWidth = computed(() => (panelVisible.property ? '260px' : '0px'))
 <template>
   <div class="editor h-screen">
     <header class="header h-56 flex items-center px-20">
-      <ToolbarLeft class="w-300">左</ToolbarLeft>
+      <ToolbarLeft class="w-300" />
       <div class="flex-1 text-center">中</div>
-      <ToolbarRight class="w-300">右</ToolbarRight>
+      <ToolbarRight class="w-300" />
     </header>
     <main class="h-[calc(100vh-56px)] flex">
       <!-- 物料 -->
-      <aside class="material overflow-hidden transition-all" :style="{ width: materialWidth }">
-        物料
-      </aside>
+      <MaterialPanel
+        class="material overflow-hidden transition-all"
+        :style="{ width: materialWidth }"
+      />
 
       <!-- 图层 -->
       <aside class="layer overflow-hidden transition-all" :style="{ width: layerWidth }">
@@ -45,7 +48,7 @@ const propertyWidth = computed(() => (panelVisible.property ? '260px' : '0px'))
 
 <style scoped lang="scss">
 .editor {
-  background: #24272e;
+  background: var(--bg-color);
 
   .header {
     border-bottom: 1px solid var(--border-color);

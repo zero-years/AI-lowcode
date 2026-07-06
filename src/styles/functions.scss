@@ -1,0 +1,3 @@
+@function my-color-mix($color, $value) {
+  @return color-mix(in srgb, var(#{$color}), black #{$value});
+}
