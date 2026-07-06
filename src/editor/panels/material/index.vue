@@ -1,26 +1,40 @@
 <script setup lang="ts">
 import MaterialItem from './components/materialItem.vue'
 
+import { getMaterialByGroup, getGroups } from '@/materials/index.ts'
+
 defineOptions({
   name: 'MaterialPanel',
+})
+
+const activeGroup = ref('info')
+
+const groups = getGroups()
+
+const currentMaterial = computed(() => {
+  return getMaterialByGroup(activeGroup.value)
 })
 </script>
 
 <template>
   <div class="material_panel flex">
     <div class="navigater w-50">
-      <div class="active">
-        <span><Icon icon="codicon:graph" width="16"></Icon> </span>
-        图表
-      </div>
-
-      <div>
-        <span><Icon icon="ant-design:form-outlined" width="16"></Icon></span>
-        表单
+      <div
+        :class="{ active: activeGroup == group.key }"
+        v-for="group in groups"
+        :key="group.key"
+        @click="activeGroup = group.key"
+      >
+        <span><Icon :icon="group.icon" width="16"></Icon> </span>
+        {{ group.name }}
       </div>
     </div>
     <div class="flex-1 p-10 flex gap-10 flex-col overflow-auto scrollbar-none">
-      <MaterialItem v-for="item in 20"></MaterialItem>
+      <MaterialItem
+        v-for="item in currentMaterial"
+        :key="item.name"
+        :material="item"
+      ></MaterialItem>
     </div>
   </div>
 </template>

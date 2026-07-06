@@ -2,13 +2,15 @@
 defineOptions({
   name: 'MaterialItem',
 })
+
+defineProps(['material'])
 </script>
 
 <template>
   <div class="material_item">
-    <div class="title">物料</div>
+    <div class="title">{{ material.name }}</div>
     <div class="icon">
-      <Icon icon="streamline-color:graph-flat" width="64"></Icon>
+      <Icon :icon="material.icon" width="64"></Icon>
     </div>
   </div>
 </template>
