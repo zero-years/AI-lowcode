@@ -7,10 +7,12 @@ import Moveable, {
   type OnResizeGroup,
 } from 'vue3-moveable'
 import Selecto from 'vue3-selecto'
+import SketchRuler from 'vue3-sketch-ruler'
 import { UseEditorStore } from '@/stores/editor'
-
 import type { MaterialSchema } from '@/materials/types'
 import { storeToRefs } from 'pinia'
+import 'vue3-sketch-ruler/lib/style.css'
+import { debounce } from '@/utils'
 
 defineOptions({
   name: 'CanvasRoot',
@@ -22,11 +24,66 @@ const { nodes } = storeToRefs(editorStore)
 
 const moveableRef = useTemplateRef('moveable')
 const stageRef = useTemplateRef('stage')
+const canvasRootRef = useTemplateRef('canvasRoot')
 
 const vm = getCurrentInstance()
 
+const canvasWidth = ref(1920)
+const canvasHeight = ref(1080)
+
+const canvasStyle = computed(() => {
+  return {
+    width: canvasWidth.value + 'px',
+    height: canvasHeight.value + 'px',
+  }
+})
+
+const rectWidth = ref(1000)
+const rectHeight = ref(800)
+const lines = ref({ h: [], v: [] })
+const scale = ref(1)
+
+const key = ref('')
+
+const palette = {
+  bgColor: '#212329',
+  longfgColor: '#6b7280',
+  fontColor: '#9ca3af',
+  fontShadowColor: '#0e8da7',
+  shadowColor: 'rgba(14, 141, 167, 0.14)',
+  lineColor: '#22c55e',
+  lineType: 'solid',
+  lockLineColor: '#4b5563',
+  borderColor: '#374151',
+  hoverBg: '#111827',
+  hoverColor: '#ffffff',
+}
+
 // 选中修改的元素
 const selectedTarget = shallowRef()
+
+const onRootResize = debounce((rect) => {
+  rectWidth.value = rect.width
+  rectHeight.value = rect.height
+}, 3000)
+
+onMounted(() => {
+  const { width, height } = canvasRootRef.value.getBoundingClientRect()
+  rectWidth.value = width
+  rectHeight.value = height
+
+  const ob = new ResizeObserver((entires) => {
+    const entry = entires[0]
+    const rect = entry.contentRect
+    onRootResize(rect)
+  })
+
+  ob.observe(canvasRootRef.value)
+
+  onUnmounted(() => {
+    ob.disconnect()
+  })
+})
 
 function onDrop(e: DragEvent) {
   const schema = e.dataTransfer.getData('schema')
@@ -104,28 +161,46 @@ function onDragGroup(e: OnDragGroup) {
 function onResizeGroup(e: OnResizeGroup) {
   e.events.forEach(onResize)
 }
+
+function onZoomChange() {
+  moveableRef.value.updateRect()
+}
 </script>
 
 <template>
-  <div class="canvas_root">
-    <div
-      ref="stage"
-      class="canvas_stage"
-      @dragover.prevent
-      @drop="onDrop"
-      @mousedown.self="onClearSelect"
+  <div class="canvas_root" ref="canvasRoot">
+    <SketchRuler
+      v-model:scale="scale"
+      :thick="20"
+      :palette="palette"
+      :width="rectWidth"
+      :height="rectHeight"
+      :canvasWidth="canvasWidth"
+      :canvasHeight="canvasHeight"
+      :lines="lines"
+      @zoomchange="onZoomChange"
     >
       <div
-        class="canvas_node"
-        v-for="node in nodes"
-        :key="node.id"
-        :style="getNodeStyle(node)"
-        :data-node-id="node.id"
-        @mousedown="onSelect(node, $event)"
+        ref="stage"
+        class="canvas_stage"
+        :style="canvasStyle"
+        @dragover.prevent
+        @drop="onDrop"
+        @mousedown.self="onClearSelect"
       >
-        <component :is="getMaterialComponent(node.type)" :schema="node"> </component>
+        <div
+          class="canvas_node"
+          v-for="node in nodes"
+          :key="node.id"
+          :style="getNodeStyle(node)"
+          :data-node-id="node.id"
+          @mousedown="onSelect(node, $event)"
+        >
+          <component :is="getMaterialComponent(node.type)" :schema="node"> </component>
+        </div>
       </div>
-    </div>
+    </SketchRuler>
+
     <Moveable
       ref="moveable"
       :target="selectedTarget"
@@ -153,10 +228,7 @@ function onResizeGroup(e: OnResizeGroup) {
 .canvas_root {
   .canvas_stage {
     position: relative;
-    width: 900px;
-    height: 600px;
     background: my-color-mix(--bg-color, 30%);
-    margin: 100px;
 
     .canvas_node {
       position: absolute;
