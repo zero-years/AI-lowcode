@@ -1,4 +1,4 @@
-import type { Material, MaterialGroup } from '@/types/index.ts'
+import type { Material, MaterialGroup } from './types.ts'
 
 const materials: Material[] = []
 
