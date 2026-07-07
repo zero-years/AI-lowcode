@@ -3,6 +3,7 @@ import ToolbarLeft from './toolbar/toolbarLeft.vue'
 import ToolbarRight from './toolbar/toolbarRight.vue'
 import MaterialPanel from './panels/material/index.vue'
 import LayerPanel from './panels/layer/index.vue'
+import CanvasRoot from './canvas/index.vue'
 
 import { UseEditorStore } from '@/stores/editor'
 
@@ -18,7 +19,7 @@ const propertyWidth = computed(() => (panelVisible.property ? '260px' : '0px'))
 </script>
 
 <template>
-  <div class="editor h-screen">
+  <div class="editor h-screen select-none">
     <header class="header h-56 flex items-center px-20">
       <ToolbarLeft class="w-300" />
       <div class="flex-1 text-center">中</div>
@@ -35,7 +36,7 @@ const propertyWidth = computed(() => (panelVisible.property ? '260px' : '0px'))
       <LayerPanel class="layer overflow-hidden transition-all" :style="{ width: layerWidth }" />
 
       <!-- 画布 -->
-      <aside class="canvas flex-1">画布</aside>
+      <CanvasRoot class="canvas flex-1" />
 
       <!-- 属性 -->
       <aside class="property overflow-hidden transition-all" :style="{ width: propertyWidth }">

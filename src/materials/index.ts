@@ -1,6 +1,9 @@
-import type { Material, MaterialGroup } from './types.ts'
+import type { Component } from 'vue'
+import type { Material, MaterialGroup, MaterialSchema } from './types.ts'
 
 const materials: Material[] = []
+
+const componentMap = new Map()
 
 const materialModules = import.meta.glob('./*/index.ts', { eager: true })
 
@@ -22,14 +25,26 @@ const groups: MaterialGroup[] = [
   },
 ]
 
-export function registerMaterial(material: Material[]) {
-  materials.push(...material)
+export function registerMaterial(material: Material, component: Component) {
+  materials.push(material)
+  componentMap.set(material.schema.type, component)
 }
 
 export function getMaterialByGroup(group: string) {
   return materials.filter((item) => item.group === group)
 }
 
-export function getGroups() {
+export function getMaterialGroups() {
   return groups
+}
+
+export function getMaterialComponent(type: string) {
+  return componentMap.get(type)
+}
+
+export function createNode(node: MaterialSchema) {
+  return {
+    ...node,
+    id: crypto.randomUUID(),
+  }
 }

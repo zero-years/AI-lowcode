@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import MaterialItem from './components/materialItem.vue'
 
-import { getMaterialByGroup, getGroups } from '@/materials/index.ts'
+import { getMaterialByGroup, getMaterialGroups } from '@/materials/index.ts'
 
 defineOptions({
   name: 'MaterialPanel',
@@ -9,7 +9,7 @@ defineOptions({
 
 const activeGroup = ref('info')
 
-const groups = getGroups()
+const groups = getMaterialGroups()
 
 const currentMaterial = computed(() => {
   return getMaterialByGroup(activeGroup.value)
