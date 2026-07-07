@@ -11,8 +11,14 @@ export const UseEditorStore = defineStore('editor', () => {
   // 画布渲染的组件列表
   const nodes = ref<MaterialSchema[]>([])
 
+  // 框选的 ID 列表
+  const selectedNodeIds = ref<string[]>([])
+
   // 选中修改的ID
-  const selectedNodeId = ref('')
+  // 从多选 ids 中计算出，如果只有一个选中，则返回该 id，否则返回 null
+  const selectedNodeId = computed(() => {
+    return selectedNodeIds.value.length == 1 ? selectedNodeIds.value[0] : null
+  })
 
   // 选中修改的节点
   const selectedNode = computed<MaterialSchema>(() => {
@@ -27,12 +33,21 @@ export const UseEditorStore = defineStore('editor', () => {
     nodes.value.push(node)
   }
 
+  // 单选
   function selectNode(id: string) {
-    selectedNodeId.value = id
+    selectedNodeIds.value = [id]
+  }
+
+  function selectNodes(ids: string[]) {
+    selectedNodeIds.value = ids
   }
 
   function clearSelected() {
-    selectedNodeId.value = null
+    selectedNodeIds.value = []
+  }
+
+  function findNodeById(id: string) {
+    return nodes.value.find((node) => node.id == id)
   }
 
   return {
@@ -40,9 +55,12 @@ export const UseEditorStore = defineStore('editor', () => {
     nodes,
     selectedNodeId,
     selectedNode,
+    selectedNodeIds,
     togglePanel,
     addNode,
     selectNode,
     clearSelected,
+    selectNodes,
+    findNodeById,
   }
 })
