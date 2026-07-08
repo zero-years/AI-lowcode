@@ -9,7 +9,7 @@ import Moveable, {
 import Selecto from 'vue3-selecto'
 import SketchRuler from 'vue3-sketch-ruler'
 import { UseEditorStore } from '@/stores/editor'
-import type { MaterialSchema } from '@/materials/types'
+import type { MaterialSchema } from '@/schema/material.ts'
 import { storeToRefs } from 'pinia'
 import 'vue3-sketch-ruler/lib/style.css'
 import { debounce } from '@/utils'
@@ -20,21 +20,20 @@ defineOptions({
 
 const editorStore = UseEditorStore()
 
-const { nodes, selectedNodeIds } = storeToRefs(editorStore)
+const { nodes, selectedNodeIds, canvas } = storeToRefs(editorStore)
 
 const moveableRef = useTemplateRef('moveable')
 const stageRef = useTemplateRef('stage')
 const canvasRootRef = useTemplateRef('canvasRoot')
 
-const vm = getCurrentInstance()
-
-const canvasWidth = ref(1920)
-const canvasHeight = ref(1080)
+const canvasWidth = toRef(canvas.value, 'width')
+const canvasHeight = toRef(canvas.value, 'height')
 
 const canvasStyle = computed(() => {
   return {
     width: canvasWidth.value + 'px',
     height: canvasHeight.value + 'px',
+    backgroundColor: canvas.value.backgroundColor,
   }
 })
 
@@ -228,7 +227,6 @@ function onZoomChange() {
 .canvas_root {
   .canvas_stage {
     position: relative;
-    background: my-color-mix(--bg-color, 30%);
 
     .canvas_node {
       position: absolute;

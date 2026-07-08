@@ -1,4 +1,5 @@
-import type { MaterialSchema } from '@/materials/types'
+import type { MaterialSchema } from '@/schema/material.ts'
+import type { PageSchema } from '@/schema/page.ts'
 import { defineStore } from 'pinia'
 
 export const UseEditorStore = defineStore('editor', () => {
@@ -8,8 +9,19 @@ export const UseEditorStore = defineStore('editor', () => {
     property: true,
   })
 
+  const page = ref<PageSchema>({
+    canvas: {
+      width: 1920,
+      height: 1080,
+      backgroundColor: '#181A1E',
+    },
+    nodes: [],
+  })
+
+  const canvas = toRef(page.value, 'canvas')
+
   // 画布渲染的组件列表
-  const nodes = ref<MaterialSchema[]>([])
+  const nodes = toRef(page.value, 'nodes')
 
   // 框选的 ID 列表
   const selectedNodeIds = ref<string[]>([])
@@ -56,6 +68,8 @@ export const UseEditorStore = defineStore('editor', () => {
     selectedNodeId,
     selectedNode,
     selectedNodeIds,
+    canvas,
+    page,
     togglePanel,
     addNode,
     selectNode,

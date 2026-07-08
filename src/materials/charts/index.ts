@@ -1,5 +1,5 @@
 import type { Component } from 'vue'
-import type { Material } from '../types.ts'
+import type { Material } from '@/schema/material.ts'
 import TextMaterial from './component.vue'
 
 export const chartsMaterial: Material = {

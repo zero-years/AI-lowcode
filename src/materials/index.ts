@@ -1,5 +1,5 @@
 import type { Component } from 'vue'
-import type { Material, MaterialGroup, MaterialSchema } from './types.ts'
+import type { Material, MaterialGroup, MaterialSchema } from '@/schema/material.ts'
 
 const materials: Material[] = []
 
