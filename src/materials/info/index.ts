@@ -6,6 +6,18 @@ export const infoMaterial: Material = {
   name: '标题',
   group: 'info',
   icon: 'streamline-color:graph-flat',
+  setters: [
+    {
+      type: 'input',
+      label: '内容',
+      key: 'props.content',
+    },
+    {
+      type: 'color',
+      label: '颜色',
+      key: 'style.color',
+    },
+  ],
   schema: {
     type: 'text',
     name: '标题',

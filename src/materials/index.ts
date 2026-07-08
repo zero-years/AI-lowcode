@@ -4,6 +4,7 @@ import type { Material, MaterialGroup, MaterialSchema } from '@/schema/material.
 const materials: Material[] = []
 
 const componentMap = new Map()
+const settersMap = new Map()
 
 const materialModules = import.meta.glob('./*/index.ts', { eager: true })
 
@@ -28,6 +29,7 @@ const groups: MaterialGroup[] = [
 export function registerMaterial(material: Material, component: Component) {
   materials.push(material)
   componentMap.set(material.schema.type, component)
+  settersMap.set(material.schema.type, material.setters)
 }
 
 export function getMaterialByGroup(group: string) {
@@ -40,6 +42,10 @@ export function getMaterialGroups() {
 
 export function getMaterialComponent(type: string) {
   return componentMap.get(type)
+}
+
+export function getMaterialSetters(type: string) {
+  return settersMap.get(type)
 }
 
 export function createNode(node: MaterialSchema) {

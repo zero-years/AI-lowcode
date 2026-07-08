@@ -4,6 +4,7 @@ import ToolbarRight from './toolbar/toolbarRight.vue'
 import MaterialPanel from './panels/material/index.vue'
 import LayerPanel from './panels/layer/index.vue'
 import CanvasRoot from './canvas/index.vue'
+import PropertyPanel from './property/index.vue'
 
 import { UseEditorStore } from '@/stores/editor'
 
@@ -15,7 +16,7 @@ const { panelVisible } = UseEditorStore()
 
 const materialWidth = computed(() => (panelVisible.material ? '260px' : '0px'))
 const layerWidth = computed(() => (panelVisible.layer ? '160px' : '0px'))
-const propertyWidth = computed(() => (panelVisible.property ? '260px' : '0px'))
+const propertyWidth = computed(() => (panelVisible.property ? '360px' : '0px'))
 </script>
 
 <template>
@@ -39,9 +40,10 @@ const propertyWidth = computed(() => (panelVisible.property ? '260px' : '0px'))
       <CanvasRoot class="canvas flex-1" />
 
       <!-- 属性 -->
-      <aside class="property overflow-hidden transition-all" :style="{ width: propertyWidth }">
-        属性
-      </aside>
+      <PropertyPanel
+        class="property overflow-hidden transition-all"
+        :style="{ width: propertyWidth }"
+      ></PropertyPanel>
     </main>
   </div>
 </template>

@@ -6,6 +6,7 @@ import App from './App.vue'
 import router from './router'
 import './styles/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
+import 'element-plus/dist/index.css'
 
 const app = createApp(App)
 

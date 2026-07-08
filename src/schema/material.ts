@@ -14,11 +14,19 @@ export interface MaterialSchema {
   props: Record<string, any>
 }
 
+interface MaterialSetter {
+  type: string
+  label: string
+  key: string
+  [key: string]: any
+}
+
 export interface Material {
   name: string
   group: string
   icon: string
   schema: Omit<MaterialSchema, 'id'>
+  setters: MaterialSetter[]
 }
 
 export interface MaterialGroup {
