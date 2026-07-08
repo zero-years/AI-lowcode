@@ -20,7 +20,7 @@ defineOptions({
 
 const editorStore = UseEditorStore()
 
-const { nodes } = storeToRefs(editorStore)
+const { nodes, selectedNodeIds } = storeToRefs(editorStore)
 
 const moveableRef = useTemplateRef('moveable')
 const stageRef = useTemplateRef('stage')
@@ -43,8 +43,6 @@ const rectHeight = ref(800)
 const lines = ref({ h: [], v: [] })
 const scale = ref(1)
 
-const key = ref('')
-
 const palette = {
   bgColor: '#212329',
   longfgColor: '#6b7280',
@@ -60,7 +58,15 @@ const palette = {
 }
 
 // 选中修改的元素
-const selectedTarget = shallowRef()
+const selectedTarget = shallowRef<HTMLElement[]>()
+
+watch(
+  selectedNodeIds,
+  (ids) => {
+    selectedTarget.value = ids.map((id) => stageRef.value.querySelector(`[data-node-id='${id}']`))
+  },
+  { deep: true, flush: 'post' },
+)
 
 const onRootResize = debounce((rect) => {
   rectWidth.value = rect.width
@@ -95,23 +101,19 @@ function onDrop(e: DragEvent) {
   editorStore.addNode(node)
 
   editorStore.selectNode(node.id)
-
-  nextTick(() => {
-    selectedTarget.value = vm.proxy.$el.querySelector(`[data-node-id='${node.id}']`)
-  })
 }
 
-function getNodeStyle(node: MaterialSchema) {
+function getNodeStyle(node: MaterialSchema, index: number) {
   return {
     width: node.layout.width + 'px',
     height: node.layout.height + 'px',
     left: node.layout.x + 'px',
     top: node.layout.y + 'px',
+    zindex: index + 1,
   }
 }
 
 function onSelect(node: MaterialSchema, e: MouseEvent) {
-  selectedTarget.value = e.currentTarget as HTMLElement
   editorStore.selectNode(node.id)
 
   nextTick(() => {
@@ -145,11 +147,9 @@ function onResize(e: OnResize) {
 
 function onClearSelect() {
   editorStore.clearSelected()
-  selectedTarget.value = null
 }
 
 function onSelectEnd(e) {
-  selectedTarget.value = e.selected
   const ids = e.selected.map((element) => element.getAttribute('data-node-id'))
   editorStore.selectNodes(ids)
 }
@@ -190,9 +190,9 @@ function onZoomChange() {
       >
         <div
           class="canvas_node"
-          v-for="node in nodes"
+          v-for="(node, index) in nodes"
           :key="node.id"
-          :style="getNodeStyle(node)"
+          :style="getNodeStyle(node, index)"
           :data-node-id="node.id"
           @mousedown="onSelect(node, $event)"
         >

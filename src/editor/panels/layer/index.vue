@@ -1,18 +1,29 @@
 <script setup lang="ts">
+import { UseEditorStore } from '@/stores/editor'
+import { storeToRefs } from 'pinia'
+import { useDraggable } from 'vue-draggable-plus'
+
 defineOptions({
   name: 'LayerPanel',
 })
+
+const editerStore = UseEditorStore()
+
+const { nodes, selectedNodeIds } = storeToRefs(editerStore)
+
+useDraggable('.layer_panel', nodes, { animation: 300, direction: 'horizontal' })
 </script>
 
 <template>
   <div class="h-full">
-    <div class="h-full layer_panel overflow-auto scrollbar-none">
-      <div class="active">
-        <span>柱状图</span>
-        <span><Icon icon="fluent:list-bar-16-regular"></Icon></span>
-      </div>
-      <div>
-        <span>柱状图</span>
+    <div class="h-full layer_panel overflow-auto scrollbar-none flex flex-col-reverse">
+      <div
+        :class="{ active: selectedNodeIds.includes(node.id) }"
+        v-for="node in nodes"
+        :key="node.id"
+        @click="editerStore.selectNode(node.id)"
+      >
+        <span>{{ node.name }}</span>
         <span><Icon icon="fluent:list-bar-16-regular"></Icon></span>
       </div>
     </div>
