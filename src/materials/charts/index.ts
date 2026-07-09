@@ -6,10 +6,10 @@ export const chartsMaterial: Material = {
   name: '柱状图',
   icon: 'streamline-color:graph-flat',
   group: 'charts',
+  setters: [],
   schema: {
     type: 'charts',
     name: '柱状图',
-    locked: false,
     layout: {
       x: 0,
       y: 0,
