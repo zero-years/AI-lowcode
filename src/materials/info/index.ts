@@ -21,6 +21,7 @@ export const infoMaterial: Material = {
   schema: {
     type: 'text',
     name: '标题',
+    locked: false,
     layout: {
       x: 0,
       y: 0,

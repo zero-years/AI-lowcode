@@ -16,7 +16,7 @@ useDraggable('.layer_panel', nodes, { animation: 300, direction: 'horizontal' })
 
 <template>
   <div class="h-full">
-    <div class="h-full layer_panel overflow-auto scrollbar-none flex flex-col-reverse">
+    <div class="h-full layer_panel overflow-auto scrollbar-none flex flex-col-reverse justify-end">
       <div
         :class="{ active: selectedNodeIds.includes(node.id) }"
         v-for="node in nodes"
@@ -33,7 +33,6 @@ useDraggable('.layer_panel', nodes, { animation: 300, direction: 'horizontal' })
 <style scoped lang="scss">
 .layer_panel {
   display: flex;
-  flex-direction: column;
   gap: 4px;
   background: my-color-mix(--bg-color, 16%);
   padding: 10px;

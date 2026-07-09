@@ -9,6 +9,7 @@ export const chartsMaterial: Material = {
   schema: {
     type: 'charts',
     name: '柱状图',
+    locked: false,
     layout: {
       x: 0,
       y: 0,

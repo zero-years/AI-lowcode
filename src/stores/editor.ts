@@ -41,6 +41,7 @@ export const UseEditorStore = defineStore('editor', () => {
     panelVisible[panelName] = !panelVisible[panelName]
   }
 
+  // 拖拽进画布
   function addNode(node: MaterialSchema) {
     nodes.value.push(node)
   }
@@ -50,16 +51,52 @@ export const UseEditorStore = defineStore('editor', () => {
     selectedNodeIds.value = [id]
   }
 
+  // 框选
   function selectNodes(ids: string[]) {
     selectedNodeIds.value = ids
   }
 
+  // 清空选中
   function clearSelected() {
     selectedNodeIds.value = []
   }
 
   function findNodeById(id: string) {
     return nodes.value.find((node) => node.id == id)
+  }
+
+  // 复制节点
+  function copyNode(node: MaterialSchema) {
+    const newNode = JSON.parse(JSON.stringify(node))
+    newNode.layout.x += 20
+    newNode.layout.y += 20
+    newNode.id = crypto.randomUUID()
+    addNode(newNode)
+    selectNode(newNode.id)
+  }
+
+  // 删除节点
+  function removeNode(node: MaterialSchema) {
+    nodes.value = nodes.value.filter((item) => item.id !== node.id)
+    selectedNodeIds.value = selectedNodeIds.value.filter((id) => id !== node.id)
+  }
+
+  function moveTop(node: MaterialSchema) {
+    const index = nodes.value.findIndex((item) => item.id === node.id)
+    nodes.value.splice(index, 1)
+
+    nodes.value.unshift(node)
+  }
+
+  function moveBottom(node: MaterialSchema) {
+    const index = nodes.value.findIndex((item) => item.id === node.id)
+    nodes.value.splice(index, 1)
+
+    nodes.value.push(node)
+  }
+
+  function toggleLock(node: MaterialSchema) {
+    node.locked = !node.locked
   }
 
   return {
@@ -76,5 +113,10 @@ export const UseEditorStore = defineStore('editor', () => {
     clearSelected,
     selectNodes,
     findNodeById,
+    copyNode,
+    removeNode,
+    moveTop,
+    moveBottom,
+    toggleLock,
   }
 })
