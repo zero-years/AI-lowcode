@@ -7,7 +7,7 @@ export function debounce(fn, time) {
   }
 }
 
-export function getDeepValue(target: any, key: string) {
+export function getValue(target: any, key: string) {
   const path = key.split('.')
 
   while (path.length) {
@@ -18,10 +18,10 @@ export function getDeepValue(target: any, key: string) {
   return target
 }
 
-export function setDeepValue(target: any, key: string, value: unknown) {
+export function setValue(target: any, key: string, value: unknown) {
   const path = key.split('.')
   const lastKey = path.pop()
-  const _target = getDeepValue(target, path.join('.'))
+  const _target = getValue(target, path.join('.'))
 
   _target[lastKey] = value
 }

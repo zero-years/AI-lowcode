@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { UseEditorStore } from '@/stores/editor'
+import { useUndoRedo } from '@/composables/useUndoRedo'
 
 defineOptions({
   name: 'ToolbarLeft',
 })
 
 const { panelVisible, togglePanel } = UseEditorStore()
+
+const { undo, redo, canRedo, canUndo } = useUndoRedo()
 </script>
 
 <template>
@@ -20,10 +23,10 @@ const { panelVisible, togglePanel } = UseEditorStore()
     <span :class="{ active: panelVisible.property }" @click="togglePanel('property')">
       <Icon icon="fluent:panel-right-16-filled" />
     </span>
-    <span>
+    <span @click="undo" :class="{ disable: !canUndo }">
       <Icon icon="material-symbols:undo-rounded" />
     </span>
-    <span>
+    <span @click="redo" :class="{ disable: !canRedo }">
       <Icon icon="material-symbols:redo-rounded" />
     </span>
   </div>
@@ -36,8 +39,14 @@ const { panelVisible, togglePanel } = UseEditorStore()
     border: 1px solid var(--border-color);
     border-radius: 6px;
     cursor: pointer;
+
     &.active {
       background: var(--active-color);
+    }
+
+    &.disable {
+      opacity: 0.4;
+      cursor: not-allowed;
     }
   }
 }
