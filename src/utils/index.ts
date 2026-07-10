@@ -19,9 +19,12 @@ export function getValue(target: any, key: string) {
 }
 
 export function setValue(target: any, key: string, value: unknown) {
-  const path = key.split('.')
-  const lastKey = path.pop()
-  const _target = getValue(target, path.join('.'))
+  const keys = key.split('.')
+  const lastKey = keys.pop()
 
-  _target[lastKey] = value
+  if (keys.length) {
+    target = getValue(target, keys.join('.'))
+  }
+
+  target[lastKey] = value
 }

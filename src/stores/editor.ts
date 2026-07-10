@@ -1,8 +1,11 @@
 import type { MaterialSchema } from '@/schema/material.ts'
 import type { PageSchema } from '@/schema/page.ts'
 import { defineStore } from 'pinia'
+import { useUndoRedo } from '@/composables/useUndoRedo'
 
 export const UseEditorStore = defineStore('editor', () => {
+  const { applyChange } = useUndoRedo()
+
   const panelVisible = reactive({
     material: true,
     layer: true,
@@ -41,9 +44,13 @@ export const UseEditorStore = defineStore('editor', () => {
     panelVisible[panelName] = !panelVisible[panelName]
   }
 
+  function setNodes(newNodes: MaterialSchema[]) {
+    applyChange(nodes, 'value', newNodes)
+  }
+
   // 拖拽进画布
   function addNode(node: MaterialSchema) {
-    nodes.value.push(node)
+    setNodes([...nodes.value, node])
   }
 
   // 单选
@@ -77,26 +84,24 @@ export const UseEditorStore = defineStore('editor', () => {
 
   // 删除节点
   function removeNode(node: MaterialSchema) {
-    nodes.value = nodes.value.filter((item) => item.id !== node.id)
+    setNodes(nodes.value.filter((item) => item.id !== node.id))
     selectedNodeIds.value = selectedNodeIds.value.filter((id) => id !== node.id)
   }
 
   function moveTop(node: MaterialSchema) {
     const index = nodes.value.findIndex((item) => item.id === node.id)
-    nodes.value.splice(index, 1)
-
-    nodes.value.unshift(node)
+    const splicedNodes = nodes.value.toSpliced(index, 1)
+    setNodes([node, ...splicedNodes])
   }
 
   function moveBottom(node: MaterialSchema) {
     const index = nodes.value.findIndex((item) => item.id === node.id)
-    nodes.value.splice(index, 1)
-
-    nodes.value.push(node)
+    const splicedNodes = nodes.value.toSpliced(index, 1)
+    setNodes([...splicedNodes, node])
   }
 
   function toggleLock(node: MaterialSchema) {
-    node.locked = !node.locked
+    applyChange(node, 'locked', !node.locked)
   }
 
   return {

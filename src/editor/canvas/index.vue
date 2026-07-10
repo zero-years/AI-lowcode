@@ -35,7 +35,7 @@ const {
   onZoomChange,
 } = useCanvasRuler({ canvasRootRef, moveableRef })
 
-const { onDrag, onDragGroup, onResize, onResizeGroup } = useMoveable()
+const { onDrag, onDragGroup, onResize, onResizeGroup, onStart, onEnd } = useMoveable(moveableRef)
 
 const { selectedTarget, onSelect, onClearSelect, onSelectEnd } = useSelection({
   stageRef,
@@ -138,9 +138,17 @@ function onCommand(command: string) {
       :origin="false"
       :resizable="true"
       @drag="onDrag"
+      @drag-start="onStart"
+      @drag-end="onEnd"
       @drag-group="onDragGroup"
+      @drag-group-start="onStart"
+      @drag-group-end="onEnd"
       @resize-group="onResizeGroup"
+      @resize-group-start="onStart"
+      @resize-group-end="onEnd"
       @resize="onResize"
+      @resize-start="onStart"
+      @resize-end="onEnd"
     ></Moveable>
     <Selecto
       v-if="stageRef"

@@ -11,6 +11,7 @@
       "@/*": ["./src/*"]
     },
 
+    "lib": ["ESNext", "DOM"],
     "strict": false,
 
     // `vue-tsc --build` produces a .tsbuildinfo file for incremental type-checking.

@@ -13,7 +13,7 @@ const componentMap = {
   color: ElColorPicker,
 }
 
-const { applyChange } = useUndoRedo()
+const { applyChange, startBatch, commitBatch } = useUndoRedo()
 
 defineProps(['setters', 'formdata'])
 </script>
@@ -27,6 +27,8 @@ defineProps(['setters', 'formdata'])
             :is="componentMap[item.type]"
             :modelValue="getValue(formdata, item.key)"
             @update:modelValue="(value) => applyChange(formdata, item.key, value)"
+            @focus="startBatch"
+            @blur="commitBatch"
           ></component>
         </el-form-item>
       </el-col>
