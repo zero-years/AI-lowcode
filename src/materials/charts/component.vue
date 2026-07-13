@@ -38,7 +38,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="chart_material w-full h-full" ref="chartRef">渲染图标</div>
+  <div class="chart_material w-full h-full" ref="chartRef"></div>
 </template>
 
 <style scoped lang=""></style>

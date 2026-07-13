@@ -17,6 +17,7 @@ declare module 'vue' {
     ElCollapseItem: typeof import('element-plus/es')['ElCollapseItem']
     ElCollaspe: typeof import('element-plus/es')['ElCollaspe']
     ElColorPicker: typeof import('element-plus/es')['ElColorPicker']
+    ElDrawder: typeof import('element-plus/es')['ElDrawder']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElDropdown: typeof import('element-plus/es')['ElDropdown']
     ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem']

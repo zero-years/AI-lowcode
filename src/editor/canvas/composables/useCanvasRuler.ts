@@ -7,8 +7,8 @@ export function useCanvasRuler({ canvasRootRef, moveableRef }) {
 
   const { canvas } = storeToRefs(editorStore)
 
-  const canvasWidth = toRef(canvas.value, 'width')
-  const canvasHeight = toRef(canvas.value, 'height')
+  const canvasWidth = computed(() => canvas.value.width)
+  const canvasHeight = computed(() => canvas.value.height)
 
   const canvasStyle = computed(() => {
     return {

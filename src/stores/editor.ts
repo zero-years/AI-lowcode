@@ -40,6 +40,10 @@ export const UseEditorStore = defineStore('editor', () => {
     return nodes.value.find((node) => node.id == selectedNodeId.value)
   })
 
+  function setPage(newPage: PageSchema) {
+    Object.assign(page.value, newPage)
+  }
+
   function togglePanel(panelName: 'material' | 'layer' | 'property') {
     panelVisible[panelName] = !panelVisible[panelName]
   }
@@ -119,6 +123,7 @@ export const UseEditorStore = defineStore('editor', () => {
     selectedNodeIds,
     canvas,
     page,
+    setPage,
     togglePanel,
     addNode,
     selectNode,
