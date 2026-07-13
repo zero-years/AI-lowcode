@@ -104,6 +104,13 @@ export const UseEditorStore = defineStore('editor', () => {
     applyChange(node, 'locked', !node.locked)
   }
 
+  // 更新节点，由于 selectedNode 是计算属性，不能直接修改，所以需要通过这个方法来更新节点
+  function updateNode(id: string, newNode: MaterialSchema) {
+    // 更新修改的节点，然后返回一个新的数组，然后替换 Nodes
+    const newnodes = nodes.value.map((node) => (node.id == id ? newNode : node))
+    setNodes(newnodes)
+  }
+
   return {
     panelVisible,
     nodes,
@@ -123,5 +130,6 @@ export const UseEditorStore = defineStore('editor', () => {
     moveTop,
     moveBottom,
     toggleLock,
+    updateNode,
   }
 })

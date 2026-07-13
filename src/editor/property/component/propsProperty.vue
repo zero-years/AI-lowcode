@@ -3,6 +3,8 @@ import { UseEditorStore } from '@/stores/editor'
 import { storeToRefs } from 'pinia'
 import { getMaterialSetters } from '@/materials'
 import FormCreate from './formCreate.vue'
+import { Icon } from '@iconify/vue'
+import MonacoEditor from '@/components/MonacoEditor/index.vue'
 
 defineOptions({
   name: 'PropsProperty',
@@ -41,10 +43,38 @@ const layoutSetter = [
 ]
 
 const active = ref('props')
+
+const visiable = ref(false)
+const jsonText = ref('')
+
+function previewJson() {
+  jsonText.value = JSON.stringify(selectedNode.value, null, 2)
+  visiable.value = true
+}
+
+function onConfirm() {
+  // 拿到新节点更新
+  const newNode = JSON.parse(jsonText.value)
+
+  editorStore.updateNode(selectedNode.value.id, {
+    ...newNode,
+    // id 和 type 不允许修改
+    id: selectedNode.value.id,
+    type: selectedNode.value.type,
+  })
+
+  visiable.value = false
+}
 </script>
 
 <template>
   <div class="node_collapse">
+    <div class="node_title">
+      <span>{{ selectedNode.name }}</span>
+      <span class="cursor-pointer" @click="previewJson">
+        <Icon icon="mingcute:code-fill" />
+      </span>
+    </div>
     <el-collapse v-model="active" accordion>
       <el-collapse-item title="布局属性" name="layout">
         <FormCreate :setters="layoutSetter" :formdata="selectedNode"></FormCreate>
@@ -53,11 +83,32 @@ const active = ref('props')
         <FormCreate :setters="setter" :formdata="selectedNode"></FormCreate>
       </el-collapse-item>
     </el-collapse>
+
+    <el-drawer :destroy-on-close="true" v-model="visiable" size="800" title="编辑JSON">
+      <MonacoEditor v-model="jsonText" />
+
+      <template #footer>
+        <el-button @click="visiable = false">取消</el-button>
+        <el-button type="primary" @click="onConfirm">确定</el-button>
+      </template>
+    </el-drawer>
   </div>
 </template>
 
 <style scoped lang="scss">
 .node_collapse {
+  .node_title {
+    height: 40px;
+    line-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: my-color-mix(--bg-color, 20%);
+    padding-left: 10px;
+    padding-right: 20px;
+    font-weight: 600;
+  }
+
   :deep(.el-collapse) {
     --el-collapse-border-color: var(--border-color);
     --el-collapse-header-height: 48px;

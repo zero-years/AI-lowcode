@@ -164,6 +164,10 @@ function onCommand(command: string) {
 
 <style scoped lang="scss">
 .canvas_root {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
   .canvas_stage {
     position: relative;
 

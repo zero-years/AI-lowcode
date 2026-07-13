@@ -6,7 +6,7 @@ defineOptions({
   name: 'ChartComponent',
 })
 
-const chartRef = useTemplateRef('chart')
+const chartRef = useTemplateRef('chartRef')
 
 const props = defineProps<{ schema: MaterialSchema }>()
 
@@ -38,7 +38,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="chart_material w-full h-full" ref="chart">渲染图标</div>
+  <div class="chart_material w-full h-full" ref="chartRef">渲染图标</div>
 </template>
 
 <style scoped lang=""></style>
