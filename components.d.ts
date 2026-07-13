@@ -24,6 +24,7 @@ declare module 'vue' {
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
     ElRow: typeof import('element-plus/es')['ElRow']
+    MonacoEditor: typeof import('./src/components/MonacoEditor/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

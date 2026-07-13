@@ -1,27 +1,15 @@
 import type { Component } from 'vue'
 import type { Material } from '@/schema/material.ts'
-import TextMaterial from './component.vue'
+import ChartComponent from './component.vue'
+import { barMaterial } from './materials/bar.ts'
+import { areaMaterial } from './materials/area.ts'
+import { lineMaterial } from './materials/line.ts'
+import { pieMaterial } from './materials/pie.ts'
 
-export const chartsMaterial: Material = {
-  name: '柱状图',
-  icon: 'streamline-color:graph-flat',
-  group: 'charts',
-  setters: [],
-  schema: {
-    type: 'charts',
-    name: '柱状图',
-    layout: {
-      x: 0,
-      y: 0,
-      width: 300,
-      height: 200,
-    },
-    props: {
-      options: {},
-    },
-  },
-}
+const chartsMaterial = [barMaterial, areaMaterial, lineMaterial, pieMaterial]
 
 export function install(callback: (material: Material, component: Component) => void) {
-  callback(chartsMaterial, TextMaterial)
+  chartsMaterial.forEach((material) => {
+    callback(material, ChartComponent)
+  })
 }

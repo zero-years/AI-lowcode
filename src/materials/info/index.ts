@@ -1,6 +1,6 @@
 import type { Component } from 'vue'
 import type { Material } from '@/schema/material.ts'
-import TextMaterial from './component.vue'
+import InfoComponent from './component.vue'
 
 export const infoMaterial: Material = {
   name: '标题',
@@ -37,5 +37,5 @@ export const infoMaterial: Material = {
 }
 
 export function install(callback: (material: Material, component: Component) => void) {
-  callback(infoMaterial, TextMaterial)
+  callback(infoMaterial, InfoComponent)
 }
