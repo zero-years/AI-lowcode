@@ -5,6 +5,7 @@ import { getMaterialSetters } from '@/materials'
 import FormCreate from './formCreate.vue'
 import { Icon } from '@iconify/vue'
 import MonacoEditor from '@/components/MonacoEditor/index.vue'
+import DataSource from './dataSource.vue'
 
 defineOptions({
   name: 'PropsProperty',
@@ -46,6 +47,7 @@ const active = ref('props')
 
 const visiable = ref(false)
 const jsonText = ref('')
+const activeTab = ref('property')
 
 function previewJson() {
   jsonText.value = JSON.stringify(selectedNode.value, null, 2)
@@ -75,14 +77,22 @@ function onConfirm() {
         <Icon icon="mingcute:code-fill" />
       </span>
     </div>
-    <el-collapse v-model="active" accordion>
-      <el-collapse-item title="布局属性" name="layout">
-        <FormCreate :setters="layoutSetter" :formdata="selectedNode"></FormCreate>
-      </el-collapse-item>
-      <el-collapse-item title="属性属性" name="props">
-        <FormCreate :setters="setter" :formdata="selectedNode"></FormCreate>
-      </el-collapse-item>
-    </el-collapse>
+
+    <el-tabs v-model="activeTab" stretch>
+      <el-tab-pane label="属性" name="property">
+        <el-collapse v-model="active" accordion>
+          <el-collapse-item title="布局属性" name="layout">
+            <FormCreate :setters="layoutSetter" :formdata="selectedNode"></FormCreate>
+          </el-collapse-item>
+          <el-collapse-item title="属性属性" name="props">
+            <FormCreate :setters="setter" :formdata="selectedNode"></FormCreate>
+          </el-collapse-item>
+        </el-collapse>
+      </el-tab-pane>
+      <el-tab-pane label="数据源" name="datasource">
+        <DataSource />
+      </el-tab-pane>
+    </el-tabs>
 
     <el-drawer :destroy-on-close="true" v-model="visiable" size="800" title="编辑JSON">
       <MonacoEditor v-model="jsonText" />

@@ -13,6 +13,7 @@ export interface MaterialSchema {
   layout: MaterialLayout
   style?: Record<string, any>
   props: Record<string, any>
+  dataId?: string
 }
 
 interface MaterialSetter {

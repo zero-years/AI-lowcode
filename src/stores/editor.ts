@@ -19,12 +19,38 @@ export const UseEditorStore = defineStore('editor', () => {
       backgroundColor: '#181A1E',
     },
     nodes: [],
+    dataSources: [
+      {
+        type: 'static',
+        id: '123',
+        name: '销售数据',
+        data: [
+          { label: '1月', value: 100 },
+          { label: '2月', value: 200 },
+          { label: '3月', value: 300 },
+          { label: '4月', value: 400 },
+        ],
+      },
+      {
+        type: 'static',
+        id: '321',
+        name: '访问',
+        data: [
+          { label: '1月', value: 1000 },
+          { label: '2月', value: 2000 },
+          { label: '3月', value: 3000 },
+          { label: '4月', value: 4000 },
+        ],
+      },
+    ],
   })
 
   const canvas = toRef(page.value, 'canvas')
 
   // 画布渲染的组件列表
   const nodes = toRef(page.value, 'nodes')
+
+  const dataSources = toRef(page.value, 'dataSources')
 
   // 框选的 ID 列表
   const selectedNodeIds = ref<string[]>([])
@@ -116,6 +142,7 @@ export const UseEditorStore = defineStore('editor', () => {
   }
 
   return {
+    dataSources,
     panelVisible,
     nodes,
     selectedNodeId,
