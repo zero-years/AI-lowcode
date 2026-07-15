@@ -24,8 +24,9 @@ const monocaRef = useTemplateRef('monaco')
 
 const modelValue = defineModel<string>()
 
+let instance: editor.IStandaloneCodeEditor
 onMounted(() => {
-  const instance = editor.create(monocaRef.value, {
+  instance = editor.create(monocaRef.value, {
     value: modelValue.value,
     tabSize: 2,
     theme: 'vs-dark',
@@ -43,6 +44,12 @@ onMounted(() => {
   onBeforeUnmount(() => {
     instance.dispose()
   })
+})
+
+watch(modelValue, (newValue) => {
+  if (newValue == instance.getValue()) return
+
+  instance.setValue(newValue)
 })
 </script>
 

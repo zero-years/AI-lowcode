@@ -28,3 +28,11 @@ export function setValue(target: any, key: string, value: unknown) {
 
   target[lastKey] = value
 }
+
+export function deepClone<T>(value: T): T {
+  if (value === null || typeof value !== 'object') {
+    return value
+  }
+
+  return JSON.parse(JSON.stringify(value))
+}
