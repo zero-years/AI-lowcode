@@ -8,6 +8,8 @@ export function debounce(fn, time) {
 }
 
 export function getValue(target: any, key: string) {
+  if (!key) return target
+
   const path = key.split('.')
 
   while (path.length) {

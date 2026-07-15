@@ -47,6 +47,7 @@ export const UseEditorStore = defineStore('editor', () => {
         id: '456',
         name: '上升趋势',
         url: '/api/data',
+        method: 'get',
         interval: 2000,
         params: {
           date: '2026-01-01',

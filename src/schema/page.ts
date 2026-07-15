@@ -20,6 +20,12 @@ export interface SourceSchema {
   // 当 type 为 api 时，url 为接口地址
   url?: string
 
+  // 当 type 为 api 时，responsePath 为接口返回数据的路径
+  responsePath?: string
+
+  // 请求方法
+  method?: 'get' | 'post'
+
   // 轮询时间，有则开启
   interval?: number
 

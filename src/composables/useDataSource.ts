@@ -1,5 +1,6 @@
 import type { SourceSchema } from '@/schema/page'
 import axios from 'axios'
+import { getValue } from '@/utils'
 
 export function useDataSource(dataId: Ref<string>) {
   const dataSources = inject<Ref<SourceSchema[]>>('dataSources')
@@ -14,24 +15,10 @@ export function useDataSource(dataId: Ref<string>) {
   async function loadData() {
     if (!source.value) return
     if (source.value.type === 'api') {
-      const url = source.value.url
-
       try {
-        // 获取当前 URL 参数
-        const search = new URLSearchParams(location.search)
+        const res = await fetchData(source.value)
 
-        // 将参数转为 params 对象
-        const params = Object.fromEntries(search.entries())
-
-        console.log('params ==>', params)
-
-        const res = await axios.get(url, {
-          params: {
-            ...source.value.params,
-            ...params,
-          },
-        })
-        data.value = res.data
+        data.value = res
       } finally {
         if (source.value.interval) {
           timer = setTimeout(() => {
@@ -55,4 +42,26 @@ export function useDataSource(dataId: Ref<string>) {
     source,
     data,
   }
+}
+
+export async function fetchData(source: SourceSchema) {
+  const search = new URLSearchParams(location.search)
+
+  // 将参数转为 params 对象
+  const params = Object.fromEntries(search.entries())
+
+  const queryParams = {
+    ...source.params,
+    ...params,
+  }
+
+  const paramsKey = source.method === 'post' ? 'data' : 'params'
+
+  const res = await axios.request({
+    url: source.url,
+    method: source.method || 'get',
+    [paramsKey]: queryParams,
+  })
+
+  return getValue(res.data, source.responsePath)
 }

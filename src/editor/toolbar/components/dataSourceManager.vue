@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import MonacoEditor from '@/components/MonacoEditor/index.vue'
 import { deepClone } from '@/utils'
 import { Icon } from '@iconify/vue'
+import { fetchData } from '@/composables/useDataSource'
 
 defineOptions({
   name: 'DataSourceManager',
@@ -24,6 +25,8 @@ const data = ref(
 )
 
 const activeSource = ref()
+const responseText = ref('')
+
 function selectDataSource(source) {
   activeSource.value = source
 }
@@ -58,6 +61,15 @@ function onSave() {
 
   // 更新页面数据
   editorStore.page.dataSources = _data
+}
+
+function onRequest() {
+  fetchData({
+    ...activeSource.value,
+    params: activeSource.value.params ? JSON.parse(activeSource.value.params) : undefined,
+  }).then((res) => {
+    responseText.value = JSON.stringify(res, null, 2)
+  })
 }
 
 defineExpose({
@@ -102,11 +114,26 @@ defineExpose({
           <el-form-item label="请求地址">
             <el-input v-model="activeSource.url"></el-input>
           </el-form-item>
+          <el-form-item label="请求方法">
+            <el-radio-group v-model="activeSource.method">
+              <el-radio-button label="Get" value="get"></el-radio-button>
+              <el-radio-button label="Post" value="post"></el-radio-button>
+            </el-radio-group>
+          </el-form-item>
           <el-form-item label="轮询时间">
             <el-input-number v-model="activeSource.interval" :min="0" step="500"></el-input-number>
           </el-form-item>
           <el-form-item label="参数">
             <MonacoEditor v-model="activeSource.params"></MonacoEditor>
+          </el-form-item>
+          <el-form-item label="相应路径">
+            <el-input v-model="activeSource.responsePath"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onRequest">请求浏览</el-button>
+          </el-form-item>
+          <el-form-item label="预览数据">
+            <MonacoEditor v-model="responseText"></MonacoEditor>
           </el-form-item>
         </div>
       </el-form>
