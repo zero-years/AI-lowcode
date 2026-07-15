@@ -7,6 +7,7 @@ import router from './router'
 import './styles/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'element-plus/dist/index.css'
+import '@/mock/data.ts'
 
 const app = createApp(App)
 

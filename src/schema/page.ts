@@ -16,6 +16,15 @@ export interface SourceSchema {
 
   // 数据载体
   data: any
+
+  // 当 type 为 api 时，url 为接口地址
+  url?: string
+
+  // 轮询时间，有则开启
+  interval?: number
+
+  // 预设的接口参数
+  params?: Record<string, any>
 }
 
 interface CanvasSchema {
