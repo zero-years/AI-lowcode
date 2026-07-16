@@ -5,7 +5,7 @@ import InfoComponent from './component.vue'
 export const infoMaterial: Material = {
   name: '标题',
   group: 'info',
-  icon: 'streamline-color:graph-flat',
+  icon: 'fluent-color:content-view-32',
   setters: [
     {
       type: 'input',

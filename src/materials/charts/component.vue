@@ -19,7 +19,7 @@ const dataId = computed(() => props.schema.dataId)
 
 const props = defineProps<{ schema: MaterialSchema }>()
 
-const { data } = useDataSource(dataId)
+const { data, loading } = useDataSource(dataId)
 
 const option = computed(() => {
   const _option = props.schema.props.option
@@ -61,7 +61,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="chart_material w-full h-full" ref="chartRef"></div>
+  <div v-loading="loading" class="chart_material w-full h-full" ref="chartRef"></div>
 </template>
 
 <style scoped lang=""></style>
