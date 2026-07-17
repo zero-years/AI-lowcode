@@ -5,14 +5,17 @@ import { storeToRefs } from 'pinia'
 import { ElMessage } from 'element-plus'
 import DataSourceManager from './components/dataSourceManager.vue'
 import MonacoEditor from '@/components/MonacoEditor/index.vue'
+import { useRouter } from 'vue-router'
+
+defineOptions({
+  name: 'ToolbarRight',
+})
 
 const editorStore = UseEditorStore()
 
 const { page } = storeToRefs(editorStore)
 
-defineOptions({
-  name: 'ToolbarRight',
-})
+const router = useRouter()
 
 const inputRef = useTemplateRef('inputRef')
 const sourceManagerRef = useTemplateRef('sourceManager')
@@ -87,27 +90,37 @@ function onSave() {
 
   dataSourceVisiable.value = false
 }
+
+function onPreview() {
+  router.push('/preview')
+}
 </script>
 
 <template>
   <div class="toolbar_right flex justify-end gap-20">
-    <span>
+    <span @click="onPreview">
       <Icon icon="pajamas:live-preview" />
+      <span class="hoveBox">预览</span>
     </span>
     <span @click="previewJson">
       <Icon icon="mingcute:code-fill" />
+      <span class="hoveBox">修改 JSON</span>
     </span>
     <span>
       <Icon icon="material-symbols:published-with-changes-rounded" />
+      <span class="hoveBox">发布</span>
     </span>
     <span @click="openDataSource">
       <Icon icon="charm:database"></Icon>
+      <span class="hoveBox">修改数据源</span>
     </span>
     <span @click="onImport">
       <Icon icon="pajamas:import" />
+      <span class="hoveBox">导入</span>
     </span>
     <span @click="onExport">
       <Icon icon="pajamas:export" />
+      <span class="hoveBox">导出</span>
     </span>
 
     <input type="file" v-show="false" ref="inputRef" @change="onFileChange" />
@@ -139,6 +152,21 @@ function onSave() {
     border: 1px solid var(--border-color);
     border-radius: 6px;
     cursor: pointer;
+
+    .hoveBox {
+      position: absolute;
+      font-size: 12px;
+      transform: translateY(6px) translateX(-25%);
+      opacity: 0;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    &:hover {
+      .hoveBox {
+        opacity: 1;
+      }
+    }
   }
 }
 </style>
