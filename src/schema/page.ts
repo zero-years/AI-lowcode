@@ -43,4 +43,5 @@ export interface PageSchema {
   canvas: CanvasSchema
   dataSources: SourceSchema[]
   nodes: MaterialSchema[]
+  id?: string
 }

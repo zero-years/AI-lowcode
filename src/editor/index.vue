@@ -8,12 +8,23 @@ import PropertyPanel from './property/index.vue'
 
 import { UseEditorStore } from '@/stores/editor'
 import { storeToRefs } from 'pinia'
+import { useRoute } from 'vue-router'
+import { getPublishPage } from '@/utils/publish.ts'
 
 defineOptions({
   name: 'ScreenEditor',
 })
 
+const route = useRoute()
+
+const pageId = route.query.id as string
+
 const editorStore = UseEditorStore()
+
+if (pageId) {
+  const page = getPublishPage(pageId)
+  editorStore.setPage(page)
+}
 
 const { dataSources, panelVisible } = storeToRefs(editorStore)
 

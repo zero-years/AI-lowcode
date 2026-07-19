@@ -15,6 +15,10 @@ const router = createRouter({
       path: '/preview',
       component: () => import('@/pages/preview/index.vue'),
     },
+    {
+      path: '/screen',
+      component: () => import('@/pages/screen/index.vue'),
+    },
   ],
 })
 

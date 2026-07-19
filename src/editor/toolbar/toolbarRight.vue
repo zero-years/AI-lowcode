@@ -6,6 +6,7 @@ import { ElMessage } from 'element-plus'
 import DataSourceManager from './components/dataSourceManager.vue'
 import MonacoEditor from '@/components/MonacoEditor/index.vue'
 import { useRouter } from 'vue-router'
+import { publishPage } from '@/utils/publish.ts'
 
 defineOptions({
   name: 'ToolbarRight',
@@ -94,6 +95,11 @@ function onSave() {
 function onPreview() {
   router.push('/preview')
 }
+
+function onPublish() {
+  const id = publishPage(page.value)
+  router.push(`/screen?id=${id}`)
+}
 </script>
 
 <template>
@@ -106,7 +112,7 @@ function onPreview() {
       <Icon icon="mingcute:code-fill" />
       <span class="hoveBox">修改 JSON</span>
     </span>
-    <span>
+    <span @click="onPublish">
       <Icon icon="material-symbols:published-with-changes-rounded" />
       <span class="hoveBox">发布</span>
     </span>
