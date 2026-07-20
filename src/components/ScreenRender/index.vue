@@ -14,9 +14,6 @@ const runtimePage = ref(props.page)
 
 const context = createRuntimeContext(runtimePage)
 
-// @ts-ignore
-window.$context = context
-
 const canvas = computed(() => {
   return runtimePage.value.canvas
 })
@@ -64,6 +61,24 @@ function initCanvas() {
   top.value = (window.innerHeight - canvas.value.height * scale.value) / 2
 }
 
+/**
+ * 绑定组件相应的事件
+ * @param node
+ */
+function createEvents(node: MaterialSchema) {
+  const listeners = {}
+  const events = node.event || []
+
+  events.forEach((event) => {
+    listeners[event.type] = () => {
+      const fn = new Function('$context', '$node', event.code)
+      fn(context, node)
+    }
+  })
+
+  return listeners
+}
+
 function registerNodeInstance() {
   const refs = {}
 
@@ -98,7 +113,12 @@ onMounted(() => {
         :key="node.id"
         :style="getNodeStyle(node, index)"
       >
-        <component :ref="node.id" :is="getMaterialComponent(node.type)" :schema="node"></component>
+        <component
+          :ref="node.id"
+          :is="getMaterialComponent(node.type)"
+          :schema="node"
+          v-on="createEvents(node)"
+        ></component>
       </div>
     </div>
   </div>

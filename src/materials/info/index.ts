@@ -39,6 +39,15 @@ export const infoMaterial: Material = {
     props: {
       content: '你好',
     },
+    event: [
+      {
+        type: 'click',
+        name: 'fn',
+        code: `
+          $context.refreshNodesByDataId('456')
+        `,
+      },
+    ],
   },
 }
 
