@@ -131,7 +131,7 @@ function onPublish() {
 
     <input type="file" v-show="false" ref="inputRef" @change="onFileChange" />
 
-    <el-drawer destroy-on-close="true" title="编辑JSON" size="800" v-model="visiable">
+    <el-drawer :destroy-on-close="true" title="编辑JSON" size="800" v-model="visiable">
       <MonacoEditor v-model="jsonText" />
 
       <template #footer>
@@ -140,7 +140,7 @@ function onPublish() {
       </template>
     </el-drawer>
 
-    <el-dialog destroy-on-close="true" title="数据源设置" v-model="dataSourceVisiable" width="800">
+    <el-dialog :destroy-on-close="true" title="数据源设置" v-model="dataSourceVisiable" width="800">
       <DataSourceManager ref="sourceManager"></DataSourceManager>
 
       <template #footer>
