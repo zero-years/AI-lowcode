@@ -93,14 +93,13 @@ export async function fetchData(source: SourceSchema, data?: Record<string, any>
 
   if (requestMap[cacheKey]) {
     // 已经请求过，直接返回缓存的 promise ，避免重复请求
-
     return requestMap[cacheKey]
   }
 
   const promise = axios
     .request(config)
     .then((res) => {
-      getValue(res.data, source.responsePath)
+      return getValue(res.data, source.responsePath)
     })
     .finally(() => {
       // 请求结束删除缓存
