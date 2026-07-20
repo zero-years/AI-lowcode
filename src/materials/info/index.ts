@@ -17,6 +17,11 @@ export const infoMaterial: Material = {
       label: '颜色',
       key: 'style.color',
     },
+    {
+      type: 'number',
+      label: '字号',
+      key: 'style.fontSize',
+    },
   ],
   schema: {
     type: 'text',
@@ -29,6 +34,7 @@ export const infoMaterial: Material = {
     },
     style: {
       color: '#fff',
+      fontSize: 16,
     },
     props: {
       content: '你好',

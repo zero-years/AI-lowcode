@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { UseEditorStore } from '@/stores/editor'
-import { storeToRefs } from 'pinia'
 import { getMaterialComponent } from '@/materials'
 import type { MaterialSchema } from '@/schema/material.ts'
 import type { PageSchema } from '@/schema/page'
+import { createRuntimeContext } from '@/runtime/context'
 
 defineOptions({
   name: 'ScreenRender',
@@ -11,16 +10,23 @@ defineOptions({
 
 const props = defineProps<{ page: PageSchema }>()
 
+const runtimePage = ref(props.page)
+
+const context = createRuntimeContext(runtimePage)
+
+// @ts-ignore
+window.$context = context
+
 const canvas = computed(() => {
-  return props.page.canvas
+  return runtimePage.value.canvas
 })
 
 const dataSources = computed(() => {
-  return props.page.dataSources
+  return runtimePage.value.dataSources
 })
 
 const nodes = computed(() => {
-  return props.page.nodes
+  return runtimePage.value.nodes
 })
 
 const scale = ref(1)
@@ -58,7 +64,21 @@ function initCanvas() {
   top.value = (window.innerHeight - canvas.value.height * scale.value) / 2
 }
 
+function registerNodeInstance() {
+  const refs = {}
+
+  for (const key in vm.refs) {
+    refs[key] = vm.refs[key][0]
+  }
+
+  context.registerNodeInstance(refs)
+}
+
+const vm = getCurrentInstance()
+
 onMounted(() => {
+  registerNodeInstance()
+
   initCanvas()
 
   addEventListener('resize', initCanvas)
@@ -78,7 +98,7 @@ onMounted(() => {
         :key="node.id"
         :style="getNodeStyle(node, index)"
       >
-        <component :is="getMaterialComponent(node.type)" :schema="node"></component>
+        <component :ref="node.id" :is="getMaterialComponent(node.type)" :schema="node"></component>
       </div>
     </div>
   </div>

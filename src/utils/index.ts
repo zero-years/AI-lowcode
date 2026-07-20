@@ -20,7 +20,7 @@ export function getValue(target: any, key: string) {
   return target
 }
 
-export function setValue(target: any, key: string, value: unknown) {
+export function setValue(target: any, key: string, value: any) {
   const keys = key.split('.')
   const lastKey = keys.pop()
 

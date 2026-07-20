@@ -19,7 +19,7 @@ const dataId = computed(() => props.schema.dataId)
 
 const props = defineProps<{ schema: MaterialSchema }>()
 
-const { data, loading } = useDataSource(dataId)
+const { data, loading, refresh } = useDataSource(dataId)
 
 const option = computed(() => {
   const _option = props.schema.props.option
@@ -57,6 +57,10 @@ onMounted(() => {
     observer.disconnect()
     chart.dispose()
   })
+})
+
+defineExpose({
+  refresh,
 })
 </script>
 
