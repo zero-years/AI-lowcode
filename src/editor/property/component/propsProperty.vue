@@ -5,6 +5,7 @@ import { getMaterialSetters } from '@/materials'
 import FormCreate from './formCreate.vue'
 import { Icon } from '@iconify/vue'
 import MonacoEditor from '@/components/MonacoEditor/index.vue'
+import NodeEventManager from './nodeEventManager.vue'
 import DataSource from './dataSource.vue'
 
 defineOptions({
@@ -44,17 +45,19 @@ const layoutSetter = [
 ]
 
 const active = ref('props')
+const eventManagerRef = useTemplateRef('eventManager')
 
-const visiable = ref(false)
+const jsonVisiable = ref(false)
 const jsonText = ref('')
 const activeTab = ref('property')
+const eventVisible = ref(false)
 
 function previewJson() {
   jsonText.value = JSON.stringify(selectedNode.value, null, 2)
-  visiable.value = true
+  jsonVisiable.value = true
 }
 
-function onConfirm() {
+function onJsonConfirm() {
   // 拿到新节点更新
   const newNode = JSON.parse(jsonText.value)
 
@@ -65,7 +68,16 @@ function onConfirm() {
     type: selectedNode.value.type,
   })
 
-  visiable.value = false
+  jsonVisiable.value = false
+}
+
+function previewEvent() {
+  eventVisible.value = true
+}
+
+function onEventConfirm() {
+  eventManagerRef.value.onSave()
+  eventVisible.value = false
 }
 </script>
 
@@ -73,9 +85,14 @@ function onConfirm() {
   <div class="node_collapse">
     <div class="node_title">
       <span>{{ selectedNode.name }}</span>
-      <span class="cursor-pointer" @click="previewJson">
-        <Icon icon="mingcute:code-fill" />
-      </span>
+      <div class="flex gap-20">
+        <span class="cursor-pointer" @click="previewEvent">
+          <Icon icon="ant-design:interaction-outlined"></Icon>
+        </span>
+        <span class="cursor-pointer" @click="previewJson">
+          <Icon icon="mingcute:code-fill" />
+        </span>
+      </div>
     </div>
 
     <el-tabs v-model="activeTab" stretch>
@@ -94,14 +111,25 @@ function onConfirm() {
       </el-tab-pane>
     </el-tabs>
 
-    <el-drawer :destroy-on-close="true" v-model="visiable" size="800" title="编辑JSON">
+    <!-- 预览 JSON -->
+    <el-drawer :destroy-on-close="true" v-model="jsonVisiable" size="800" title="编辑JSON">
       <MonacoEditor v-model="jsonText" />
 
       <template #footer>
-        <el-button @click="visiable = false">取消</el-button>
-        <el-button type="primary" @click="onConfirm">确定</el-button>
+        <el-button @click="jsonVisiable = false">取消</el-button>
+        <el-button type="primary" @click="onJsonConfirm">确定</el-button>
       </template>
     </el-drawer>
+
+    <!-- 事件配置 -->
+    <el-dialog :destroy-on-close="true" width="800" v-model="eventVisible" title="事件配置">
+      <NodeEventManager ref="eventManager" />
+
+      <template #footer>
+        <el-button @click="eventVisible = false">取消</el-button>
+        <el-button type="primary" @click="onEventConfirm">确定</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 

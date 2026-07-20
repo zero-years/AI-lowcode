@@ -43,9 +43,7 @@ export const infoMaterial: Material = {
       {
         type: 'click',
         name: 'fn',
-        code: `
-          $context.refreshNodesByDataId('456')
-        `,
+        code: '',
       },
     ],
   },
