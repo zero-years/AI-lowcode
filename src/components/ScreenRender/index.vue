@@ -3,6 +3,7 @@ import { getMaterialComponent } from '@/materials'
 import type { MaterialSchema } from '@/schema/material.ts'
 import type { PageSchema } from '@/schema/page'
 import { createRuntimeContext } from '@/runtime/context'
+import { runSandbox } from '@/runtime/sandbox'
 
 defineOptions({
   name: 'ScreenRender',
@@ -76,8 +77,8 @@ function createEvents(node: MaterialSchema) {
     }
 
     event.handler = listeners[event.type] = (payload) => {
-      const fn = new Function('$context', '$node', '$payload', event.code)
-      fn(context, node, payload)
+      // 运行沙箱
+      runSandbox(event.code, { $context: context, $node: node, $payload: payload })
     }
   })
 

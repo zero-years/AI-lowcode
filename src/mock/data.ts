@@ -5,7 +5,6 @@ Mock.setup({
 })
 
 Mock.mock(/\/api\/data/, 'get', (options) => {
-  console.log('options ==>', options)
   // 创建 URL
   const url = new URL(options.url, location.origin)
 
