@@ -1,6 +1,7 @@
 import type { Component } from 'vue'
 import type { Material } from '@/schema/material.ts'
 import InfoComponent from './component.vue'
+import { BaseEvent } from '../baseEvent.ts'
 
 export const infoMaterial: Material = {
   name: '标题',
@@ -23,6 +24,7 @@ export const infoMaterial: Material = {
       key: 'style.fontSize',
     },
   ],
+  eventOptions: [...BaseEvent],
   schema: {
     type: 'text',
     name: '标题',

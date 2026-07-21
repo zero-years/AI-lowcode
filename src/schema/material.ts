@@ -40,11 +40,17 @@ interface MaterialSetter {
   [key: string]: any
 }
 
+interface MaterialEventOptions {
+  label: string
+  value: string
+}
+
 export interface Material {
   name: string
   group: string
   icon: string
   schema: Omit<MaterialSchema, 'id'>
+  eventOptions: MaterialEventOptions[]
   setters: MaterialSetter[]
 }
 

@@ -5,6 +5,7 @@ import MonacoEditor from '@/components/MonacoEditor/index.vue'
 import { Icon } from '@iconify/vue'
 import type { MaterialEvent } from '@/schema/material'
 import { ElMessage } from 'element-plus'
+import { getMaterialEventOptions } from '@/materials'
 
 defineOptions({
   name: 'NodeEventManager',
@@ -62,6 +63,10 @@ const dispatchOptions = computed(() => {
       }),
     }
   })
+})
+
+const eventOptions = computed(() => {
+  return getMaterialEventOptions(selectedNode.value.type)
 })
 
 async function copyNodeId(id: string) {
@@ -148,7 +153,13 @@ defineExpose({
           <el-input v-model="activeEvent.name" />
         </el-form-item>
         <el-form-item label="类型">
-          <el-input v-model="activeEvent.type"></el-input>
+          <el-select
+            v-model="activeEvent.type"
+            :options="eventOptions"
+            allow-create
+            filterable
+            placeholder="请选择触发的事件名"
+          ></el-select>
         </el-form-item>
         <el-form-item label="事件函数">
           <div class="function_content bg-[#1E1E1E] flex w-full flex-col">
