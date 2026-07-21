@@ -7,9 +7,14 @@ defineOptions({
   name: 'ToolbarLeft',
 })
 
-const { panelVisible, togglePanel } = UseEditorStore()
+const { panelVisible, togglePanel, selectNode } = UseEditorStore()
 
 const { undo, redo, canRedo, canUndo } = useUndoRedo()
+
+function undoFn() {
+  undo()
+  selectNode(null)
+}
 </script>
 
 <template>
@@ -26,7 +31,7 @@ const { undo, redo, canRedo, canUndo } = useUndoRedo()
       <Icon icon="fluent:panel-right-16-filled" />
       <span class="hoveBox">属性</span>
     </span>
-    <span @click="undo" :class="{ disable: !canUndo }">
+    <span @click="undoFn" :class="{ disable: !canUndo }">
       <Icon icon="material-symbols:undo-rounded" />
     </span>
     <span @click="redo" :class="{ disable: !canRedo }">
