@@ -25,7 +25,8 @@ function selectEvent(event: MaterialEvent) {
 
 function onAdd() {
   data.value.push({
-    name: '未命名数据源',
+    name: '函数名称(不可重复)',
+    title: '事件标题',
     type: '',
     code: '',
   })
@@ -63,7 +64,7 @@ defineExpose({
           :class="{ active: item.name == activeEvent?.name }"
           @click="selectEvent(item)"
         >
-          <span>{{ item.name }}</span>
+          <span>{{ item.title }}</span>
           <span @click.stop="removeEvent(item.name)">
             <Icon icon="gala:remove"></Icon>
           </span>
@@ -72,7 +73,10 @@ defineExpose({
     </div>
     <div class="content scrollbar-none">
       <el-form v-if="activeEvent" label-width="80">
-        <el-form-item label="名称">
+        <el-form-item label="事件标题">
+          <el-input v-model="activeEvent.title" />
+        </el-form-item>
+        <el-form-item label="函数名称">
           <el-input v-model="activeEvent.name" />
         </el-form-item>
         <el-form-item label="类型">
@@ -81,10 +85,13 @@ defineExpose({
         <el-form-item label="事件函数">
           <div class="function_content bg-[#1E1E1E] flex w-full flex-col">
             <div class="flex-none pl-20">
-              <span class="text-[#C678DD]">function</span>
+              <span class="text-[#C678DD]">function </span>
+              <span class="text-[#56A6ED]">{{ activeEvent.name }}</span>
               <span class="text-[#8D56A1]"
                 >(<span class="text-[#DB616A]"
-                  >$context<span class="text-[#E1B870]">,</span>$node</span
+                  >$context<span class="text-[#E1B870]">,</span>$node<span class="text-[#E1B870]"
+                    >,</span
+                  >$payload</span
                 >)</span
               >{
             </div>

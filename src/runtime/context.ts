@@ -35,6 +35,8 @@ interface RuntimeContext {
    * 通过 dataId 刷新数据源，从而改变所有使用到该数据源的表格
    */
   refreshNodesByDataId(dataId: string, ...args: any[]): void
+  // 触发事件
+  dispatch(id: string, name: string, payload?: any): any
 }
 
 export function createRuntimeContext(page: Ref<PageSchema>): RuntimeContext {
@@ -96,6 +98,21 @@ export function createRuntimeContext(page: Ref<PageSchema>): RuntimeContext {
     })
   }
 
+  const dispatch: RuntimeContext['dispatch'] = (id, name, payload) => {
+    const node = getNode(id)
+
+    if (!node) {
+      console.warn(`找不到 ID 为 ${id} 的节点`)
+      return
+    }
+
+    const event = node.event.find((event) => event.name == name)
+
+    if (event) {
+      event.handler?.(payload)
+    }
+  }
+
   return {
     getNode,
     setAttribute,
@@ -104,5 +121,6 @@ export function createRuntimeContext(page: Ref<PageSchema>): RuntimeContext {
     registerNodeInstance,
     trigger,
     refreshNodesByDataId,
+    dispatch,
   }
 }

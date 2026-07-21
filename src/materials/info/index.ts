@@ -44,6 +44,7 @@ export const infoMaterial: Material = {
         type: 'click',
         name: 'fn',
         code: '',
+        title: '点击事件',
       },
     ],
   },
