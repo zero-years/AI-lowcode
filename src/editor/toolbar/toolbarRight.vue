@@ -163,6 +163,7 @@ function onPublish() {
       position: absolute;
       font-size: 12px;
       transform: translateY(6px) translateX(-25%);
+      display: none;
       opacity: 0;
       transition: all 0.2s;
       text-align: center;
@@ -170,7 +171,9 @@ function onPublish() {
 
     &:hover {
       .hoveBox {
+        display: block;
         opacity: 1;
+        pointer-events: none;
       }
     }
   }

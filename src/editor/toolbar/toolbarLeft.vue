@@ -64,6 +64,7 @@ const { undo, redo, canRedo, canUndo } = useUndoRedo()
     &:hover {
       .hoveBox {
         opacity: 1;
+        pointer-events: none;
       }
     }
   }
