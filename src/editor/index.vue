@@ -22,7 +22,7 @@ const pageId = route.query.id as string
 const editorStore = UseEditorStore()
 
 if (pageId) {
-  const page = getPublishPage(pageId)
+  const page = getPublishPage(pageId as string)
   editorStore.setPage(page)
 }
 

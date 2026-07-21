@@ -2,10 +2,9 @@
 import { UseEditorStore } from '@/stores/editor'
 import { storeToRefs } from 'pinia'
 import MonacoEditor from '@/components/MonacoEditor/index.vue'
-import { deepClone } from '@/utils'
 import { Icon } from '@iconify/vue'
-import { fetchData } from '@/composables/useDataSource'
 import type { MaterialEvent } from '@/schema/material'
+import { ElMessage } from 'element-plus'
 
 defineOptions({
   name: 'NodeEventManager',
@@ -13,11 +12,11 @@ defineOptions({
 
 const editorStore = UseEditorStore()
 
-const { selectedNode } = storeToRefs(editorStore)
+const { selectedNode, nodes } = storeToRefs(editorStore)
 
 const data = ref(selectedNode.value.event || [])
 
-const activeEvent = ref()
+const activeEvent = ref<MaterialEvent>()
 
 function selectEvent(event: MaterialEvent) {
   activeEvent.value = event
@@ -47,6 +46,57 @@ function onSave() {
   })
 }
 
+const dispatchEvent = ref()
+
+const dispatchOptions = computed(() => {
+  return nodes.value.map((node) => {
+    return {
+      label: node.name,
+      value: node.id,
+      children: node.event?.map((event) => {
+        return {
+          label: event.title,
+          value: event.name,
+          disabled: activeEvent.value?.name == event.name,
+        }
+      }),
+    }
+  })
+})
+
+async function copyNodeId(id: string) {
+  // 只支持 https 或 开发环境
+  try {
+    await navigator.clipboard.writeText(id)
+
+    ElMessage.success('复制成功')
+  } catch {
+    const textarea = document.createElement('textarea')
+
+    textarea.value = id
+    textarea.style.position = 'fixed'
+    textarea.style.opacity = '0'
+
+    document.body.appendChild(textarea)
+
+    textarea.select()
+    document.execCommand('copy')
+
+    document.body.removeChild(textarea)
+  }
+}
+
+function insertDispatchCode(values: string[]) {
+  const [id, name] = values
+  const code = `\n$context.disptach('${id}','${name}')`
+
+  activeEvent.value.code += code
+
+  nextTick(() => {
+    dispatchEvent.value = undefined
+  })
+}
+
 defineExpose({
   onSave,
 })
@@ -73,6 +123,24 @@ defineExpose({
     </div>
     <div class="content scrollbar-none">
       <el-form v-if="activeEvent" label-width="80">
+        <div class="w-400 mb-20 ml-80 flex gap-20">
+          <el-select class="flex-1" placeholder="复制组件ID" @change="copyNodeId">
+            <el-option
+              v-for="node in nodes"
+              :key="node.id"
+              :value="node.id"
+              :label="node.name"
+            ></el-option>
+          </el-select>
+          <el-cascader
+            class="flex-1"
+            placeholder="选择组件事件"
+            :options="dispatchOptions"
+            v-model="dispatchEvent"
+            @change="insertDispatchCode"
+          >
+          </el-cascader>
+        </div>
         <el-form-item label="事件标题">
           <el-input v-model="activeEvent.title" />
         </el-form-item>
