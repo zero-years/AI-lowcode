@@ -13,6 +13,7 @@ export const UseEditorStore = defineStore('editor', () => {
   })
 
   const page = ref<PageSchema>({
+    pageName: '未命名',
     canvas: {
       width: 1920,
       height: 1080,
@@ -62,6 +63,8 @@ export const UseEditorStore = defineStore('editor', () => {
   const nodes = toRef(page.value, 'nodes')
 
   const dataSources = toRef(page.value, 'dataSources')
+
+  const pageName = toRef(page.value, 'pageName')
 
   // 框选的 ID 列表
   const selectedNodeIds = ref<string[]>([])
@@ -161,6 +164,7 @@ export const UseEditorStore = defineStore('editor', () => {
     selectedNodeIds,
     canvas,
     page,
+    pageName,
     setPage,
     togglePanel,
     addNode,

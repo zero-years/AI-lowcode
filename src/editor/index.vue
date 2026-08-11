@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ToolbarLeft from './toolbar/toolbarLeft.vue'
 import ToolbarRight from './toolbar/toolbarRight.vue'
+import PageTitle from './toolbar/pageTitle.vue'
 import MaterialPanel from './panels/material/index.vue'
 import LayerPanel from './panels/layer/index.vue'
 import CanvasRoot from './canvas/index.vue'
@@ -26,7 +27,7 @@ if (pageId) {
   editorStore.setPage(page)
 }
 
-const { dataSources, panelVisible } = storeToRefs(editorStore)
+const { dataSources, panelVisible, pageName } = storeToRefs(editorStore)
 
 provide('dataSources', dataSources)
 
@@ -39,7 +40,7 @@ const propertyWidth = computed(() => (panelVisible.value.property ? '360px' : '0
   <div class="editor h-screen select-none">
     <header class="header h-56 flex items-center px-20">
       <ToolbarLeft class="w-300" />
-      <div class="flex-1 text-center">中</div>
+      <PageTitle v-model="pageName"></PageTitle>
       <ToolbarRight class="w-300" />
     </header>
     <main class="h-[calc(100vh-56px)] flex">
