@@ -33,9 +33,9 @@ export const pieMaterial: Material = {
       },
     },
     {
-      type: 'color',
-      label: '主色',
-      key: 'props.option.color.0',
+      type: 'multColor',
+      label: '颜色',
+      key: 'props.option.color',
     },
     {
       type: 'input',

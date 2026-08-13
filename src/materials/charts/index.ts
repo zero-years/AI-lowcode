@@ -5,8 +5,9 @@ import { barMaterial } from './materials/bar.ts'
 import { areaMaterial } from './materials/area.ts'
 import { lineMaterial } from './materials/line.ts'
 import { pieMaterial } from './materials/pie.ts'
+import { gapPieMaterial } from './materials/gapPie.ts'
 
-const chartsMaterial = [barMaterial, areaMaterial, lineMaterial, pieMaterial]
+const chartsMaterial = [barMaterial, areaMaterial, lineMaterial, pieMaterial, gapPieMaterial]
 
 export function install(callback: (material: Material, component: Component) => void) {
   chartsMaterial.forEach((material) => {

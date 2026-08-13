@@ -2,6 +2,7 @@
 import { getValue } from '@/utils'
 import { ElInput, ElInputNumber, ElColorPicker, ElCheckbox, ElSelect } from 'element-plus'
 import { useUndoRedo } from '@/composables/useUndoRedo'
+import MultColor from './customComponent/multColor.vue'
 
 defineOptions({
   name: 'FormCreate',
@@ -13,6 +14,7 @@ const componentMap = {
   color: ElColorPicker,
   checkbox: ElCheckbox,
   select: ElSelect,
+  multColor: MultColor,
 }
 
 const { applyChange, startBatch, commitBatch } = useUndoRedo()
