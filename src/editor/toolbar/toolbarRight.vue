@@ -100,10 +100,18 @@ function onPublish() {
   const id = publishPage(page.value)
   router.push(`/screen?id=${id}`)
 }
+
+function showAiPanel() {
+  editorStore.panelVisible.aiPanel = !editorStore.panelVisible.aiPanel
+}
 </script>
 
 <template>
   <div class="toolbar_right flex justify-end gap-20">
+    <span @click="showAiPanel">
+      <Icon icon="mingcute:ai-line" />
+      <span class="hoveBox">AI 对话</span>
+    </span>
     <span @click="onPreview">
       <Icon icon="pajamas:live-preview" />
       <span class="hoveBox">预览</span>
@@ -174,6 +182,7 @@ function onPublish() {
         display: block;
         opacity: 1;
         pointer-events: none;
+        background: #21232a;
       }
     }
   }

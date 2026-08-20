@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import ToolbarLeft from './toolbar/toolbarLeft.vue'
-import ToolbarRight from './toolbar/toolbarRight.vue'
-import PageTitle from './toolbar/pageTitle.vue'
-import MaterialPanel from './panels/material/index.vue'
-import LayerPanel from './panels/layer/index.vue'
-import CanvasRoot from './canvas/index.vue'
-import PropertyPanel from './panels/property/index.vue'
+import ToolbarLeft from '@/editor/toolbar/toolbarLeft.vue'
+import ToolbarRight from '@/editor/toolbar/toolbarRight.vue'
+import PageTitle from '@/editor/toolbar/pageTitle.vue'
+import MaterialPanel from '@/editor/panels/material/index.vue'
+import LayerPanel from '@/editor/panels/layer/index.vue'
+import CanvasRoot from '@/editor/canvas/index.vue'
+import PropertyPanel from '@/editor/panels/property/index.vue'
+import AiPanel from '@/editor/panels/ai/index.vue'
 
 import { UseEditorStore } from '@/stores/editor'
 import { storeToRefs } from 'pinia'
@@ -34,6 +35,7 @@ provide('dataSources', dataSources)
 const materialWidth = computed(() => (panelVisible.value.material ? '260px' : '0px'))
 const layerWidth = computed(() => (panelVisible.value.layer ? '160px' : '0px'))
 const propertyWidth = computed(() => (panelVisible.value.property ? '360px' : '0px'))
+const aiPanelWidth = computed(() => (panelVisible.value.aiPanel ? '460px' : '0px'))
 </script>
 
 <template>
@@ -61,6 +63,12 @@ const propertyWidth = computed(() => (panelVisible.value.property ? '360px' : '0
         class="property overflow-hidden transition-all"
         :style="{ width: propertyWidth }"
       ></PropertyPanel>
+
+      <!-- AI 对话 -->
+      <AiPanel
+        class="aiPanel overflow-hidden transition-all"
+        :style="{ width: aiPanelWidth }"
+      ></AiPanel>
     </main>
   </div>
 </template>
@@ -81,7 +89,8 @@ const propertyWidth = computed(() => (panelVisible.value.property ? '360px' : '0
     border-right: 1px solid var(--border-color);
   }
 
-  .property {
+  .property,
+  .aiPanel {
     border-left: 1px solid var(--border-color);
   }
 }
