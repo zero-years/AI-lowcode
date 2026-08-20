@@ -5,7 +5,7 @@ import PageTitle from './toolbar/pageTitle.vue'
 import MaterialPanel from './panels/material/index.vue'
 import LayerPanel from './panels/layer/index.vue'
 import CanvasRoot from './canvas/index.vue'
-import PropertyPanel from './property/index.vue'
+import PropertyPanel from './panels/property/index.vue'
 
 import { UseEditorStore } from '@/stores/editor'
 import { storeToRefs } from 'pinia'
