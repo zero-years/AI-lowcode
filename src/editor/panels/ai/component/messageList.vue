@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import LoadingAnimation from '@/components/Loading/index.vue'
+
 defineOptions({
   name: 'MessageList',
 })
@@ -20,7 +22,10 @@ defineProps(['messages'])
       </el-avatar>
 
       <!-- 内容 -->
-      <div class="message_content">{{ message.text }}</div>
+      <div class="message_content">
+        <span v-if="message.text">{{ message.text }}</span>
+        <LoadingAnimation v-else></LoadingAnimation>
+      </div>
     </div>
   </div>
 </template>
@@ -43,6 +48,8 @@ defineProps(['messages'])
     background: my-color-mix(--bg-color, 10%);
     padding: 8px 10px;
     border-radius: 8px;
+    display: flex;
+    align-items: center;
   }
 }
 
