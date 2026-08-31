@@ -1,9 +1,11 @@
 import type { Material } from '@/schema/material.ts'
+import { createChartNodeSchema } from '../schema'
 
 export const areaMaterial: Material = {
   name: '面积图',
   group: 'charts',
   icon: 'fluent-color:data-area-32',
+  configSchema: createChartNodeSchema('area-chart'),
   setters: [
     {
       type: 'input',

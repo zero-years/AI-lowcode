@@ -1,9 +1,11 @@
 import type { Material } from '@/schema/material.ts'
+import { createChartNodeSchema } from '../schema'
 
 export const lineMaterial: Material = {
   name: '折线图',
   group: 'charts',
   icon: 'fluent-color:data-trending-32',
+  configSchema: createChartNodeSchema('line-chart'),
   setters: [
     {
       type: 'input',

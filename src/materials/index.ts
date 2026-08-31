@@ -58,3 +58,13 @@ export function createNode(node: MaterialSchema) {
     id: crypto.randomUUID(),
   }
 }
+
+export function getAllMaterialSchema() {
+  return materials.map((item) => {
+    return {
+      type: item.schema.type,
+      name: item.name,
+      configSchema: item.configSchema.toJSONSchema(),
+    }
+  })
+}

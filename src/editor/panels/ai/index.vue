@@ -3,6 +3,10 @@ import { useStream } from '@langchain/vue'
 import MessageList from './component/messageList.vue'
 import { deleteThreadId, getThreadId, setThreadId } from './threadId-storage.ts'
 import { Icon } from '@iconify/vue'
+import { storeToRefs } from 'pinia'
+import { UseEditorStore } from '@/stores/editor.ts'
+import { getAllMaterialSchema } from '@/materials/index.ts'
+import { CanvasSchema } from '@/editor/schema/common.ts'
 
 defineOptions({
   name: 'AiPanel',
@@ -18,6 +22,8 @@ const { messages, submit, isLoading, stop, client } = useStream({
   onThreadId: setThreadId,
 })
 
+const { page, selectedNodeIds } = storeToRefs(UseEditorStore())
+
 function onSubmit() {
   if (isLoading.value || !message.value) return
 
@@ -28,6 +34,12 @@ function onSubmit() {
         content: message.value,
       },
     ],
+    page: page.value,
+    selectedNodeIds: selectedNodeIds.value,
+    schema: {
+      material: getAllMaterialSchema(),
+      canvas: CanvasSchema.toJSONSchema(),
+    },
   })
   message.value = ''
 }

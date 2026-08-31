@@ -2,11 +2,13 @@ import type { Component } from 'vue'
 import type { Material } from '@/schema/material.ts'
 import InfoComponent from './component.vue'
 import { BaseEvent } from '../baseEvent.ts'
+import { TextSchema } from './schema.ts'
 
 export const infoMaterial: Material = {
   name: '标题',
   group: 'info',
   icon: 'fluent-color:content-view-32',
+  configSchema: TextSchema,
   setters: [
     {
       type: 'input',
