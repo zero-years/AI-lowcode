@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useStream } from '@langchain/vue'
 import MessageList from './component/messageList.vue'
+import { deleteThreadId, getThreadId, setThreadId } from './threadId-storage.ts'
+import { Icon } from '@iconify/vue'
 
 defineOptions({
   name: 'AiPanel',
@@ -8,10 +10,12 @@ defineOptions({
 
 const message = ref('')
 
-const { messages, submit, isLoading, stop } = useStream({
+const { messages, submit, isLoading, stop, client } = useStream({
   apiUrl: 'http://localhost:2024',
   assistantId: 'screen_design_agent',
   transport: 'sse',
+  threadId: getThreadId(),
+  onThreadId: setThreadId,
 })
 
 function onSubmit() {
@@ -39,11 +43,26 @@ function onKeyDown(e: KeyboardEvent) {
 function onCancel() {
   stop()
 }
+
+async function deleteSession() {
+  await client.threads.delete(getThreadId())
+
+  deleteThreadId()
+  message.value = ''
+
+  location.reload()
+}
 </script>
 
 <template>
   <div class="ai_panel h-full">
-    <div class="flex flex-col gap-10 h-full p-20">
+    <div class="flex flex-col gap-10 h-full p-20 translate-z-1">
+      <div class="ai_tools">
+        <div class="tool" @click="deleteSession">
+          <Icon icon="fluent:delete-12-regular" />
+        </div>
+      </div>
+
       <MessageList
         class="message_list flex-1"
         :messages="messages"
@@ -61,5 +80,16 @@ function onCancel() {
 <style scoped lang="scss">
 .ai_panel {
   background: my-color-mix(--bg-color, 40%);
+
+  .ai_tools {
+    display: flex;
+
+    .tool {
+      padding: 4px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  }
 }
 </style>
