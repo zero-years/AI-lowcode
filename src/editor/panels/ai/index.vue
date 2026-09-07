@@ -14,7 +14,9 @@ defineOptions({
 
 const message = ref('')
 
-const { messages, submit, isLoading, stop, client } = useStream({
+const editorstore = UseEditorStore()
+
+const { messages, submit, isLoading, stop, client, values } = useStream({
   apiUrl: 'http://localhost:2024',
   assistantId: 'screen_design_agent',
   transport: 'sse',
@@ -22,7 +24,18 @@ const { messages, submit, isLoading, stop, client } = useStream({
   onThreadId: setThreadId,
 })
 
-const { page, selectedNodeIds } = storeToRefs(UseEditorStore())
+const { page, selectedNodeIds } = storeToRefs(editorstore)
+
+watch(
+  () => values.value.action,
+  (action: any) => {
+    if (!action) return
+
+    if (action.type == 'add_node') {
+      editorstore.addNode(toRaw(action.node))
+    }
+  },
+)
 
 function onSubmit() {
   if (isLoading.value || !message.value) return
@@ -57,9 +70,11 @@ function onCancel() {
 }
 
 async function deleteSession() {
-  await client.threads.delete(getThreadId())
-
+  const id = getThreadId()
   deleteThreadId()
+
+  await client.threads.delete(id)
+
   message.value = ''
 
   location.reload()
