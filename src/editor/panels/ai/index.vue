@@ -7,6 +7,7 @@ import { storeToRefs } from 'pinia'
 import { UseEditorStore } from '@/stores/editor.ts'
 import { getAllMaterialSchema } from '@/materials/index.ts'
 import { CanvasSchema } from '@/editor/schema/common.ts'
+import { deepClone } from '@/utils/index.ts'
 
 defineOptions({
   name: 'AiPanel',
@@ -21,6 +22,7 @@ const { messages, submit, isLoading, stop, client, values } = useStream({
   assistantId: 'screen_design_agent',
   transport: 'sse',
   threadId: getThreadId(),
+  optimistic: false,
   onThreadId: setThreadId,
 })
 
@@ -31,8 +33,18 @@ watch(
   (action: any) => {
     if (!action) return
 
+    console.log('action ==>', action)
+
     if (action.type == 'add_node') {
-      editorstore.addNode(toRaw(action.node))
+      const newNode = deepClone(toRaw(action.node))
+
+      editorstore.addNode(newNode)
+    }
+
+    if (action.type == 'update_node') {
+      const newNode = deepClone(toRaw(action.node))
+
+      editorstore.updateNode(action.node.id, newNode)
     }
   },
 )
