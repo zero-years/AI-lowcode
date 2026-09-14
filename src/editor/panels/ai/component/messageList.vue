@@ -21,6 +21,12 @@ const visiableMessages = computed(() => {
   })
 })
 
+const showAIMessage = computed(() => {
+  if (!props.isLoading) return false
+
+  return props.messages.at(-1)?.type !== 'ai'
+})
+
 function onScroll() {
   const el = messageContainerRef.value
 
@@ -68,6 +74,13 @@ onMounted(() => {
             :final="true"
           ></MarkdownRender>
           <LoadingAnimation v-else></LoadingAnimation>
+        </div>
+      </div>
+
+      <div v-if="showAIMessage" class="message_box message_box_ai flex gap-10">
+        <el-avatar>AI</el-avatar>
+        <div class="message_content">
+          <LoadingAnimation></LoadingAnimation>
         </div>
       </div>
     </div>

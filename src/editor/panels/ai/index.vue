@@ -14,6 +14,7 @@ defineOptions({
 })
 
 const message = ref('')
+const curRunId = ref<string>(null)
 
 const editorstore = UseEditorStore()
 
@@ -24,6 +25,9 @@ const { messages, submit, isLoading, stop, client, values } = useStream({
   threadId: getThreadId(),
   optimistic: false,
   onThreadId: setThreadId,
+  onCreated: ({ runId }) => {
+    curRunId.value = runId
+  },
 })
 
 const { page, selectedNodeIds } = storeToRefs(editorstore)
@@ -78,6 +82,7 @@ function onKeyDown(e: KeyboardEvent) {
 }
 
 function onCancel() {
+  client.runs.cancel(getThreadId(), curRunId.value, true, 'rollback')
   stop()
 }
 
