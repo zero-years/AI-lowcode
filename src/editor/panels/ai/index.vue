@@ -32,23 +32,21 @@ const { messages, submit, isLoading, stop, client, values } = useStream({
 
 const { page, selectedNodeIds } = storeToRefs(editorstore)
 
+const methodMap = {
+  add_node: 'addNode',
+  update_node: 'updateNode',
+  remove_node: 'removeNode',
+}
+
 watch(
-  () => values.value.action,
-  (action: any) => {
-    if (!action) return
-
-    console.log('action ==>', action)
-
-    if (action.type == 'add_node') {
-      const newNode = deepClone(toRaw(action.node))
-
-      editorstore.addNode(newNode)
-    }
-
-    if (action.type == 'update_node') {
-      const newNode = deepClone(toRaw(action.node))
-
-      editorstore.updateNode(action.node.id, newNode)
+  () => values.value.actions,
+  (actions: any) => {
+    if (!actions.length) return
+    for (const action of actions) {
+      const node = deepClone(toRaw(action.node))
+      const method = methodMap[action.type]
+      console.log('method ==>', method)
+      editorstore[method](node)
     }
   },
 )
