@@ -1,5 +1,6 @@
 import type { Component } from 'vue'
 import type { Material, MaterialGroup, MaterialSchema } from '@/schema/material.ts'
+import { toJSONSchema } from '@/utils/agentSchema'
 
 const materials: Material[] = []
 
@@ -64,7 +65,7 @@ export function getAllMaterialSchema() {
     return {
       type: item.schema.type,
       name: item.name,
-      configSchema: item.configSchema.toJSONSchema(),
+      configSchema: toJSONSchema(item.configSchema),
     }
   })
 }

@@ -28,7 +28,7 @@ const option = computed(() => {
     dataset: {
       ...option.dataset,
       // 重写 source 找不到则用回原始数据
-      source: data.value || _option.dataset.source,
+      source: data.value || _option?.dataset?.source,
     },
   }
 })
