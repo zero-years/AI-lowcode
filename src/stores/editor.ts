@@ -160,6 +160,20 @@ export const UseEditorStore = defineStore('editor', () => {
     setNodes(newnodes)
   }
 
+  // 新增数据源
+  function addDataSource(dataSource) {
+    const newDataSources = [...dataSources.value, dataSource]
+
+    applyChange(dataSources, 'value', newDataSources)
+  }
+
+  // 更新数据源
+  function updateDataSource(dataSource) {
+    const newDataSources = dataSources.value.map((ds) => (ds.id == dataSource.id ? dataSource : ds))
+
+    applyChange(dataSources, 'value', newDataSources)
+  }
+
   return {
     dataSources,
     panelVisible,
@@ -183,5 +197,7 @@ export const UseEditorStore = defineStore('editor', () => {
     moveBottom,
     toggleLock,
     updateNode,
+    addDataSource,
+    updateDataSource,
   }
 })

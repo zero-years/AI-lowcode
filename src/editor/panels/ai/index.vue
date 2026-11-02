@@ -6,7 +6,7 @@ import { Icon } from '@iconify/vue'
 import { storeToRefs } from 'pinia'
 import { UseEditorStore } from '@/stores/editor.ts'
 import { getAllMaterialSchema } from '@/materials/index.ts'
-import { CanvasSchema } from '@/editor/schema/common.ts'
+import { CanvasSchema, DataSourceSchema } from '@/editor/schema/common.ts'
 import { deepClone } from '@/utils/index.ts'
 import { toJSONSchema } from '@/utils/agentSchema.ts'
 
@@ -37,6 +37,8 @@ const methodMap = {
   add_node: 'addNode',
   update_node: 'updateNode',
   remove_node: 'removeNode',
+  add_data_source: 'addDataSource',
+  update_data_source: 'updateDataSource',
 }
 
 watch(
@@ -64,9 +66,11 @@ function onSubmit() {
     ],
     page: page.value,
     selectedNodeIds: selectedNodeIds.value,
+    dataSources: editorstore.dataSources,
     schema: {
       material: getAllMaterialSchema(),
       canvas: toJSONSchema(CanvasSchema),
+      dataSource: toJSONSchema(DataSourceSchema),
     },
   })
   message.value = ''
