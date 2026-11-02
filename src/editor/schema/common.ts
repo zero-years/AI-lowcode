@@ -67,5 +67,10 @@ export const DataSourceSchema = z
     responsePath: z.string().max(500).optional().describe('从 API 响应中读取数据的字段路径'),
     interval: z.number().optional().describe('API 数据源的轮询间隔，单位为毫秒'),
     params: JsonObjectSchema.optional().describe('API 请求发送的预设参数'),
+    dataDescription: z
+      .string()
+      .describe(
+        '只描述 data 字段的数据结构、字段名称、字段类型和业务含义，不描述数据源名称、类型或请求配置',
+      ),
   })
   .describe('编辑器当前支持的数据源结构')

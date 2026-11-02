@@ -38,7 +38,9 @@ let chart: EChartsType
 watch(
   option,
   (newValue) => {
-    chart.setOption(newValue)
+    chart.setOption(newValue, {
+      notMerge: true,
+    })
   },
   { deep: true },
 )

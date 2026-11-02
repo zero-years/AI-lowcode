@@ -31,6 +31,9 @@ export interface SourceSchema {
 
   // 预设的接口参数
   params?: Record<string, any>
+
+  // 数据的描述
+  dataDescription: string
 }
 
 interface CanvasSchema {

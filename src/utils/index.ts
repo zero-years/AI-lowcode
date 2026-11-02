@@ -1,3 +1,4 @@
+import { get, set } from 'lodash-es'
 export function debounce(fn, time) {
   let timer
 
@@ -8,27 +9,29 @@ export function debounce(fn, time) {
 }
 
 export function getValue(target: any, key: string) {
-  if (!key) return target
+  return get(target, key)
+  // if (!key) return target
 
-  const path = key.split('.')
+  // const path = key.split('.')
 
-  while (path.length) {
-    const key = path.shift()
-    target = target[key]
-  }
+  // while (path.length) {
+  //   const key = path.shift()
+  //   target = target[key]
+  // }
 
-  return target
+  // return target
 }
 
 export function setValue(target: any, key: string, value: any) {
-  const keys = key.split('.')
-  const lastKey = keys.pop()
+  return set(target, key, value)
+  // const keys = key.split('.')
+  // const lastKey = keys.pop()
 
-  if (keys.length) {
-    target = getValue(target, keys.join('.'))
-  }
+  // if (keys.length) {
+  //   target = getValue(target, keys.join('.'))
+  // }
 
-  target[lastKey] = value
+  // target[lastKey] = value
 }
 
 export function deepClone<T>(value: T): T {

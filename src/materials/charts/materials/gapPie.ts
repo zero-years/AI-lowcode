@@ -1,11 +1,19 @@
 import type { Material } from '@/schema/material.ts'
 import { createChartNodeSchema } from '../schema'
 
+const GapPieSchema = createChartNodeSchema('gap-pie-chart')
 export const gapPieMaterial: Material = {
   name: '间隙饼图',
   group: 'charts',
   icon: 'fluent-color:data-pie-32',
-  configSchema: createChartNodeSchema('gap-pie-chart'),
+  configSchema: GapPieSchema.extend({
+    props: GapPieSchema.shape.props.extend({
+      option: GapPieSchema.shape.props.shape.option.omit({
+        xAxis: true,
+        yAxis: true,
+      }),
+    }),
+  }),
   setters: [
     {
       type: 'input',

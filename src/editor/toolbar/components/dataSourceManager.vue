@@ -39,6 +39,7 @@ function onAdd() {
     data: '',
     params: '{}',
     url: undefined,
+    dataDescription: '',
   })
 
   selectDataSource(data.value.at(-1))
@@ -106,6 +107,9 @@ defineExpose({
             <el-radio-button label="静态数据源" value="static">静态数据源</el-radio-button>
             <el-radio-button label="动态数据源" value="api">动态数据源</el-radio-button>
           </el-radio-group>
+        </el-form-item>
+        <el-form-item label="数据描述">
+          <el-input type="textarea" v-model="activeSource.dataDescription"></el-input>
         </el-form-item>
         <el-form-item label="数据" v-if="activeSource.type === 'static'">
           <MonacoEditor v-model="activeSource.data"></MonacoEditor>

@@ -1,11 +1,20 @@
 import type { Material } from '@/schema/material.ts'
 import { createChartNodeSchema } from '../schema'
 
+const PieOptionSchema = createChartNodeSchema('pie-chart')
+
 export const pieMaterial: Material = {
   name: '饼图',
   group: 'charts',
   icon: 'fluent-color:data-pie-32',
-  configSchema: createChartNodeSchema('pie-chart'),
+  configSchema: PieOptionSchema.extend({
+    props: PieOptionSchema.shape.props.extend({
+      option: PieOptionSchema.shape.props.shape.option.omit({
+        xAxis: true,
+        yAxis: true,
+      }),
+    }),
+  }),
   setters: [
     {
       type: 'input',
