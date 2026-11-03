@@ -19,6 +19,10 @@ const router = createRouter({
       path: '/screen',
       component: () => import('@/pages/screen/index.vue'),
     },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/editor',
+    },
   ],
 })
 

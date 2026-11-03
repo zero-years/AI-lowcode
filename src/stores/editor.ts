@@ -7,9 +7,9 @@ export const UseEditorStore = defineStore('editor', () => {
   const { applyChange } = useUndoRedo()
 
   const panelVisible = reactive({
-    material: true,
-    layer: true,
-    property: true,
+    material: false,
+    layer: false,
+    property: false,
     aiPanel: true,
   })
 

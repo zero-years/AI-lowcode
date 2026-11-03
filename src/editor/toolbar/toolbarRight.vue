@@ -175,6 +175,7 @@ function showAiPanel() {
       opacity: 0;
       transition: all 0.2s;
       text-align: center;
+      z-index: 10;
     }
 
     &:hover {
