@@ -47,7 +47,7 @@ watch(
 
 onMounted(() => {
   chart = init(chartRef.value)
-  chart.setOption(props.schema.props.option)
+  chart.setOption(option.value)
 
   const observer = new ResizeObserver(() => {
     chart.resize()
