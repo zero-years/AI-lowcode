@@ -23,7 +23,7 @@ useDraggable('.layer_panel', nodes, { animation: 300, direction: 'horizontal' })
         :key="node.id"
         @click="editerStore.selectNode(node.id)"
       >
-        <span>{{ node.name }}</span>
+        <span class="truncate">{{ node.name }}</span>
         <span><Icon icon="fluent:list-bar-16-regular"></Icon></span>
       </div>
     </div>
